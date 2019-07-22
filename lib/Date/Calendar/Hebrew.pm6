@@ -1,6 +1,10 @@
 use v6.c;
 unit class Date::Calendar::Hebrew:ver<0.0.1>:auth<cpan:JFORGET>;
 
+has Int $.year  where { $_ ≥ 1 };
+has Int $.month where { 1 ≤ $_ ≤ 13 };
+has Int $.day   where { 1 ≤ $_ ≤ 30 };
+
 
 =begin pod
 
@@ -30,6 +34,15 @@ months, so  while the duration  of the Hebrew year  oscillates between
 353 and 385 days,  on average it is very close to  the duration of the
 tropic year.
 
+=head1 PROBLEMS AND KNOWN BUGS
+
+The  validation  of  C<new>  parameters  is  very  basic.  Especially,
+checking the month  number ignores the year's nature  (leap or normal)
+and you can create a date in Adar II for a normal year. Also, checking
+the  day number  ignores the  month value  and you  can create  a 30th
+Iyyar, a  30th Tammuz,  a 30th  Elul or  a 30th  Tevet, even  if these
+months have only 29 days.
+
 =head1 SEE ALSO
 
 =head2 Perl 5 Software
@@ -39,6 +52,8 @@ L<DateTime>
 L<DateTime::Calendar::Hebrew>
 
 L<Date::Convert>
+
+L<Date::Hebrew::Simple>
 
 L<Date::Converter>
 
