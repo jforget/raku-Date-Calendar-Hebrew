@@ -1,0 +1,27 @@
+{
+  "auth" : "cpan:JFORGET",
+  "authors" : [
+    "Jean Forget"
+  ],
+  "build-depends" : [ ],
+  "depends" : [ ],
+  "description" : "Conversions from / to the Hebrew calendar",
+  "license" : "Artistic-2.0",
+  "name" : "Date::Calendar::Hebrew",
+  "perl" : "6.c",
+  "provides" : {
+    "Date::Calendar::Hebrew" : "lib/Date/Calendar/Hebrew.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "",
+  "tags" : [ ],
+  "support" : {
+    "email" : "JFORGET@cpan.org"
+  },
+  "tags" : [
+      "date"
+    , "calendar"
+  ],
+  "test-depends" : [ ],
+  "version" : "0.0.1"
+}
