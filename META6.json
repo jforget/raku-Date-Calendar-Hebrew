@@ -4,16 +4,16 @@
     "Jean Forget"
   ],
   "build-depends" : [ ],
-  "depends" : [ ],
+  "depends"       : [ ],
   "description" : "Conversions from / to the Hebrew calendar",
-  "license" : "Artistic-2.0",
+  "license"     : "Artistic-2.0",
   "name" : "Date::Calendar::Hebrew",
   "perl" : "6.c",
   "provides" : {
       "Date::Calendar::Hebrew"        : "lib/Date/Calendar/Hebrew.pm6"
     , "Date::Calendar::Hebrew::Names" : "lib/Date/Calendar/Hebrew/Names.pm6"
   },
-  "resources" : [ ],
+  "resources"  : [ ],
   "source-url" : "https://github.com/jforget/p6-Date-Calendar-Hebrew.git",
   "tags" : [ ],
   "support" : {
