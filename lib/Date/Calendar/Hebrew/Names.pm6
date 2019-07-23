@@ -1,6 +1,21 @@
 use v6.c;
 unit class Date::Calendar::Hebrew::Names:ver<0.0.1>:auth<cpan:JFORGET>;
 
+my @month-names = <Nisan      Iyyar    Sivan
+                   Tammuz     Av       Elul
+                   Tishri     Sheshvan Kislev
+                   Tevet      Shevat   Adar>
+;
+
+our sub month-name(Int:D $month, Bool $leap = False --> Str) {
+  if $leap && $month == 12 {
+    return "Adar I";
+  }
+  if $leap && $month == 13 {
+    return "Adar II";
+  }
+  return @month-names[$month - 1];
+}
 
 
 =begin pod

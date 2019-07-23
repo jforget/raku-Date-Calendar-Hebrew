@@ -7,6 +7,21 @@ has Int $.year  where { $_ ≥ 1 };
 has Int $.month where { 1 ≤ $_ ≤ 13 };
 has Int $.day   where { 1 ≤ $_ ≤ 30 };
 
+method gist {
+  sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
+}
+
+method month-name {
+  Date::Calendar::Hebrew::Names::month-name($.month, $.is-leap);
+}
+
+method is-leap {
+  is-leap($.year);
+}
+
+sub is-leap(Int $year --> Any) {
+  return (7 × $year + 1) % 19 < 7;
+}
 
 =begin pod
 
