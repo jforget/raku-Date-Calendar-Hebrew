@@ -1,5 +1,6 @@
 use v6.c;
 use Date::Calendar::Hebrew::Names;
+use List::MoreUtils <before_incl before>;
 
 unit class Date::Calendar::Hebrew:ver<0.0.1>:auth<cpan:JFORGET>;
 
@@ -19,8 +20,125 @@ method is-leap {
   is-leap($.year);
 }
 
+method new-from-date($date) {
+  $.new-from-daycount($date.daycount);
+}
+
+method new-from-daycount(Int $count) {
+  my ($y, $m, $d) = jed-to-ymdf($count + mjd-to-jed());
+  $.new(year => $y, month => $m, day => $d);
+}
+
 sub is-leap(Int $year --> Any) {
   return (7 × $year + 1) % 19 < 7;
+}
+
+sub mjd-to-jed {
+  2_086_804;
+}
+
+sub rata-die-to-mjd {
+  1408228;
+}
+
+sub epoch {
+  34799;
+}
+
+sub year-months(Int $year --> Int) {
+  return 13 if is-leap($year);
+  return 12;
+}
+
+sub delay_1(Int $year --> Int) {
+  my $months = ((235 × $year - 234) / 19).floor;
+  my $parts  = 12084 + 13753 × $months;
+  my $day    = 29 × $months + ($parts / 25920).floor;
+  if (3 × ($day + 1)) % 7 < 3 {
+    ++$day;
+  }
+  return $day;
+}
+
+sub delay_2(Int $year --> Int) {
+  my $last    = delay_1($year - 1);
+  my $present = delay_1($year    );
+  my $next    = delay_1($year + 1);
+  if $next - $present == 356 {
+    return 2;
+  }
+  elsif $present - $last == 382 {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+# 29-day months: Iyyar, Tanmuz, Elul, Sheshvan (on 353, 354, 383 and 384-day years),
+#                Kislev (on 353 and 383-day years), Tevet, Adar (when non leap) and Adar II (when leap)
+# 30-day months: Nisan, Sivan, Av, Tishri, Sheshvan (on 355 and 385-day years),
+#                Kislev (on 354, 355, 384 and 385-day years), Shevet and Adar I (when leap)
+sub month-days(Int $year, Int $month --> Int) {
+ return 29 if $month ==  2 | 4 | 6 | 10 | 13;
+ return 29 if $month == 12 && ! is-leap($year);
+ return 29 if $month ==  8 && year-days($year) % 10 != 5;
+ return 29 if $month ==  9 && year-days($year) % 10 == 3;
+ return 30;
+
+}
+
+sub year-days(Int $year --> Int) {
+  ymdf-to-jed($year + 1, 7, 1) - ymdf-to-jed($year, 7, 1);
+}
+
+sub ymdf-to-jed(Int $year, Int $month, Int $day --> Int) {
+  # Not directly translated from Perl 5 into Perl 6, but Perl 5 → APL → Perl 6
+  # We suppose we have already a function with signature
+  #      R ← year_months Y
+  # which gives a 12 or 13 result depending on the year type (normal / leap)
+  # and a function with signature
+  #      R ← Y month_days M
+  # which gives a 29 or 30 result for the month length.
+  # The currified form of this last function in APL syntax is
+  #      { year month_days ⍵ }
+  # (I hope so, I have not checked the documentation). So with
+  # thse two lines
+  #      V ← 6 ⌽ ⍳ year_months year
+  #      +/ { year month_days ⍵ } [ (¯1 + V ⍳ month) ↑ V ]
+  # we get the number of days in the year before a given month.
+
+  # Another important point: ymdf-to-jed calls month-days which calls year-days which calls ymdf-to-jed
+  # What about a runaway recursion? 
+  # No worries. As long as year-days calls ymdf-to-jed with a month parameter equal to 7, this instance of
+  # ymdf-to-jed will deal with an empty list of month numbers, so it will not call month-days again.
+
+  my @V = (1 .. year-months $year);
+
+  return  epoch()
+	 + delay_1($year)
+	 + delay_2($year)
+	 + $day + 1
+	 + [+] map { month-days($year, $_) }, (before { $_ == $month }, @V.rotate(6))
+	 ;
+}
+
+sub jed-to-ymdf(Int $jed) {
+  my ($y, $m, $d);
+  my Rat $jed-r = $jed.floor + 0.5;
+  $y = (98496.0 × ($jed-r - epoch()) / 35975351.0).floor - 1;
+  while ymdf-to-jed($y + 1, 7, 1) ≤ $jed {
+    ++$y;
+    #say $y;
+  }
+
+  my @V = (1 .. year-months $y);
+  for @V.rotate(6) -> $m1 {
+    last if ymdf-to-jed($y, $m1, 1) > $jed;
+    $m = $m1;
+    #say $m;
+  }
+  return ($y, $m, 1 + $jed - ymdf-to-jed($y, $m, 1));
 }
 
 =begin pod
