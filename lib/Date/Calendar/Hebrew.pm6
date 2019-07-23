@@ -20,6 +20,10 @@ method is-leap {
   is-leap($.year);
 }
 
+method daycount {
+  ymdf-to-jed($.year, $.month, $.day) - mjd-to-jed();
+}
+
 method new-from-date($date) {
   $.new-from-daycount($date.daycount);
 }
@@ -27,6 +31,12 @@ method new-from-date($date) {
 method new-from-daycount(Int $count) {
   my ($y, $m, $d) = jed-to-ymdf($count + mjd-to-jed());
   $.new(year => $y, month => $m, day => $d);
+}
+
+method to-date($class = 'Date') {
+  # See "Learning Perl 6" page 177
+  my $d = ::($class).new-from-daycount($.daycount);
+  return $d;
 }
 
 sub is-leap(Int $year --> Any) {

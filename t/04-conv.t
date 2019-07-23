@@ -72,7 +72,7 @@ my @test-data = (
      , <3759  5  5      -1  7  4>
 );
 
-plan  1 × @test-data.elems;
+plan  2 × @test-data.elems;
 
 for @test-data -> $datum {
   my ($y-he, $m-he, $d-he, $y-gr, $m-gr, $d-gr) = $datum;
@@ -82,12 +82,15 @@ for @test-data -> $datum {
   is($date-he.gist, $expected);
 }
 
-#for @test-data -> $datum {
-#  my ($y-he, $m-he, $d-he, $y-gr, $m-gr, $d-gr) = $datum;
-#  my Date::Calendar::Hebrew $date-he .= new(year => +$y-he, month => +$m-he, day => +$d-he);
-#  my Date $date-gr = $date-he.to-date;
-#  my $expected = sprintf("%04d-%02d-%02d", $y-gr, $m-gr, $d-gr);
-#  is($date-gr.gist, $expected);
-#}
+for @test-data -> $datum {
+  my ($y-he, $m-he, $d-he, $y-gr, $m-gr, $d-gr) = $datum;
+  my Date::Calendar::Hebrew $date-he .= new(year => +$y-he, month => +$m-he, day => +$d-he);
+  my Date $date-gr = $date-he.to-date;
+  my $expected = sprintf("%04d-%02d-%02d", $y-gr, $m-gr, $d-gr);
+  if $y-gr < 0 {
+    $expected = sprintf("-%04d-%02d-%02d", -$y-gr, $m-gr, $d-gr);
+  }
+  is($date-gr.gist, $expected);
+}
 
 done-testing;
