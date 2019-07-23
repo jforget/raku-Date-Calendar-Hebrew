@@ -10,10 +10,11 @@
   "name" : "Date::Calendar::Hebrew",
   "perl" : "6.c",
   "provides" : {
-    "Date::Calendar::Hebrew" : "lib/Date/Calendar/Hebrew.pm6"
+      "Date::Calendar::Hebrew"        : "lib/Date/Calendar/Hebrew.pm6"
+    , "Date::Calendar::Hebrew::Names" : "lib/Date/Calendar/Hebrew/Names.pm6"
   },
   "resources" : [ ],
-  "source-url" : "",
+  "source-url" : "https://github.com/jforget/p6-Date-Calendar-Hebrew.git",
   "tags" : [ ],
   "support" : {
     "email" : "JFORGET@cpan.org"
@@ -22,6 +23,8 @@
       "date"
     , "calendar"
   ],
-  "test-depends" : [ ],
+  "test-depends" : [ 
+      "Test::META"
+  ],
   "version" : "0.0.1"
 }
