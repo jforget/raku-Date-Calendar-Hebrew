@@ -6,9 +6,44 @@ Date::Calendar::Hebrew - Conversions from / to the Hebrew calendar
 SYNOPSIS
 ========
 
+Converting a Gregorian date (e.g. 16h June 2019) into Hebrew
+
 ```perl6
 use Date::Calendar::Hebrew;
+my Date                   $TPC2019-Pittsburgh-grg .= new(2019, 6, 21);
+my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb = new-from-date($TPC2019-Pittsburgh-grg);
+say $TPC2019-Pittsburgh-heb; # --> 5779-03-18
+say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb; # --> Yom Shishi 18 Sivan 5779
+
 ```
+
+Converting a Hebrew date (e.g. 6 Av 5779) into Gregorian
+
+```perl6
+use Date::Calendar::Hebrew;
+my Date::Calendar::Hebrew $Perlcon-Riga-heb = new(year  => 5779
+                                                , month =>    5
+						, day   =>    6);
+my Date $Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
+say $Perlcon-Riga-grg;
+
+```
+
+INSTALLATION
+============
+
+```shell
+zef install Date::Calendar::Hebrew
+```
+
+or
+
+```shell
+git clone https://github.com/jforget/p6-Date-Calendar-Hebrew.git
+cd p6-Date-Calendar-Hebrew
+zef install .
+```
+
 
 DESCRIPTION
 ===========
@@ -18,7 +53,7 @@ Date::Calendar::Hebrew is ...
 AUTHOR
 ======
 
-Jean <J2N-FORGET@orange.fr>
+Jean Forget <JFORGET@cpan.org>
 
 COPYRIGHT AND LICENSE
 =====================

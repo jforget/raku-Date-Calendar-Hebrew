@@ -1,4 +1,6 @@
 use v6.c;
+use Date::Calendar::Hebrew::Names;
+
 unit class Date::Calendar::Hebrew:ver<0.0.1>:auth<cpan:JFORGET>;
 
 has Int $.year  where { $_ ≥ 1 };
@@ -33,6 +35,80 @@ very close  to the  duration of a  lunation. The years  have 12  or 13
 months, so  while the duration  of the Hebrew year  oscillates between
 353 and 385 days,  on average it is very close to  the duration of the
 tropic year.
+
+=head1 METHODS
+
+=head2 Constructors
+
+=head3 new
+
+Create an Hebrew date by giving the year, month and day numbers.
+
+=head3 new-from-date
+
+Build an  Hebrew date by  cloning an  object from another  class. This
+other   class    can   be    the   core    class   C<Date>    or   any
+C<Date::Calendar::xxx> class with a C<daycount> method.
+
+=head3 new-from-daycount
+
+Build an Hebrew date from the Modified Julian Day number.
+
+=head2 Accessors
+
+=head3 year, month, day
+
+The numbers defining the date.
+
+=head3 month-name
+
+The month of the date, as a string.
+
+=head3 day-name
+
+The name of the day within  the week.
+
+=head3 daycount
+
+Convert the date to Modified Julian Day Number (a day-only scheme
+based on 17 November 1858).
+
+=head2 Other Methods
+
+=head3 to-date
+
+Clones  the   date  into   a  core  class   C<Date>  object   or  some
+C<Date::Calendar::>I<xxx> compatible calendar  class. The target class
+name is given  as a positional parameter. This  parameter is optional,
+the default value is C<"Date"> for the Gregorian calendar.
+
+To convert a date from a  calendar to another, you have two conversion
+styles,  a "push"  conversion and  a "pull"  conversion. For  example,
+while converting from the astronomical  date "1 Vendémiaire IV" to the
+arithmetic variant, you can code:
+
+=begin code :lang<perl6>
+
+use Date::Calendar::Hebrew;
+use Date::Calendar::FrenchRevolutionary;
+
+my  Date::Calendar::Hebrew              $d-orig;
+my  Date::Calendar::FrenchRevolutionary $d-dest-push;
+my  Date::Calendar::FrenchRevolutionary $d-dest-pull;
+
+$d-orig .= new(year  => 5779
+             , month =>    4
+             , day   =>   26);
+$d-dest-push  = $d-orig.to-date("Date::Calendar::FrenchRevolutionary");
+$d-dest-pull .= new-from-date($d-orig);
+
+=end code
+
+When converting I<from> Gregorian, use the pull style. When converting
+I<to> Gregorian, use the push style. When converting from any calendar
+other than Gregorian  to any other calendar other  than Gregorian, use
+the style you prefer.
+
 
 =head1 PROBLEMS AND KNOWN BUGS
 
