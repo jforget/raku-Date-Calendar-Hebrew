@@ -5,7 +5,7 @@ use v6.c;
 use Test;
 use Date::Calendar::Hebrew;
 
-plan  11;
+plan  12;
 
 my Date::Calendar::Hebrew $d .= new(year => 5779, month => 4, day => 19);
 
@@ -14,7 +14,7 @@ is($d.day,    19);
 is($d.year, 5779);
 is($d.gist      , '5779-04-19');
 is($d.month-name, 'Tammuz');
-#  is($d.day-name,   'Yom Sheni');
+is($d.day-name,   'Yom Sheni');
 
 # Adar on a regular year
 $d .= new(year => 5778, month => 12, day => 19);

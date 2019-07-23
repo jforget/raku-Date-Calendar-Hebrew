@@ -16,6 +16,10 @@ method month-name {
   Date::Calendar::Hebrew::Names::month-name($.month, $.is-leap);
 }
 
+method day-name {
+  Date::Calendar::Hebrew::Names::day-name(($.daycount + 3) % 7);
+}
+
 method is-leap {
   is-leap($.year);
 }
@@ -274,7 +278,7 @@ L<Date::Convert>
 
 L<Date::Hebrew::Simple>
 
-L<Date::Converter>
+L<Date::Converter> which I used as a model for the computations in this module.
 
 =head2 Other Software
 
@@ -296,6 +300,18 @@ or L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-g
 =head1 AUTHOR
 
 Jean Forget <JFORGET at cpan dot org>
+
+=head1 THANKS
+
+Many  thanks to  all those  who were  involved in  Perl 6,  Rakudo and
+Rakudo-Star.
+
+Many thanks  to Andrew,  Laurent and C<brian>  for writing  books that
+helped me learn Perl 6.
+
+And some additional thanks  to Andrew, whose C<Date::Converter> module
+was the basis of the computations in this module.
+
 
 =head1 COPYRIGHT AND LICENSE
 

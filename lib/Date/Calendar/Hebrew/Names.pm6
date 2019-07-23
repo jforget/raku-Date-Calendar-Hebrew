@@ -6,6 +6,14 @@ my @month-names = <Nisan      Iyyar    Sivan
                    Tishri     Sheshvan Kislev
                    Tevet      Shevat   Adar>
 ;
+my @day-names = ( "Yom Rishon"
+                , "Yom Sheni"
+                , "Yom Shelishi"
+                , "Yom Revil"
+                , "Yom Hamishi"
+                , "Yom Shishi"
+                , "Shabbat"
+);
 
 our sub month-name(Int:D $month, Bool $leap = False --> Str) {
   if $leap && $month == 12 {
@@ -15,6 +23,10 @@ our sub month-name(Int:D $month, Bool $leap = False --> Str) {
     return "Adar II";
   }
   return @month-names[$month - 1];
+}
+
+our sub day-name(Int:D $day7 --> Str) {
+  return @day-names[$day7];
 }
 
 
