@@ -163,16 +163,35 @@ Date::Calendar::Hebrew - Conversions from / to the Hebrew calendar
 
 =head1 SYNOPSIS
 
+Converting a Gregorian date (e.g. 16th June 2019) into Hebrew
+
 =begin code :lang<perl6>
 
 use Date::Calendar::Hebrew;
+my Date                   $TPC2019-Pittsburgh-grg .= new(2019, 6, 16);
+my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb = new-from-date($TPC2019-Pittsburgh-grg);
+say $TPC2019-Pittsburgh-heb; # --> 5779-03-18
+say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb; # --> Yom Rishon 13 Sivan 5779
+
+=end code
+
+Converting a Gregorian date (e.g. 16th June 2019) into Hebrew
+
+=begin code :lang<perl6>
+
+use Date::Calendar::Hebrew;
+my Date::Calendar::Hebrew $Perlcon-Riga-heb = new(year  => 5779
+                                                , month =>    5
+						, day   =>    6);
+my Date $Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
+say $Perlcon-Riga-grg;
 
 =end code
 
 =head1 DESCRIPTION
 
 Date::Calendar::Hebrew  is a  class representing  dates in  the Hebrew
-calendar. It allows you ton convert  an Hebrew date into Gregorian (or
+calendar. It allows  you to convert an Hebrew date  into Gregorian (or
 possibly other) calendar and the other way.
 
 The Hebrew calendar  is a luni-solar calendar. Some  months are 29-day
@@ -182,6 +201,21 @@ very close  to the  duration of a  lunation. The years  have 12  or 13
 months, so  while the duration  of the Hebrew year  oscillates between
 353 and 385 days,  on average it is very close to  the duration of the
 tropic year.
+
+The switch from  a date to the  next occurs at sunset.  This point has
+not been implemented in this module, conversions are valid only before
+sunset. So,  while 16th June 2019  at noon converts to  13 Sivan 5779,
+16th June 2019 at 23:59 really is 14 Sivan 5779.
+
+A peculiar characteristic  of this calendar is that the  switch from a
+year to the next occurs when switching  from month 6 to month 7. So we
+have the following:
+
+  2019-04-05   5779-13-29 Yom Shishi 29 Adar II 5779
+  2019-04-06   5779-01-01 Shabbat 1 Nisan 5779 --> no change of year
+  ...
+  2019-09-29   5779-06-29 Yom Rishon 29 Elul 5779
+  2019-09-30   5780-07-01 Yom Sheni 1 Tishri 5780 --> new year
 
 =head1 METHODS
 
@@ -266,6 +300,10 @@ the  day number  ignores the  month value  and you  can create  a 30th
 Iyyar, a  30th Tammuz,  a 30th  Elul or  a 30th  Tevet, even  if these
 months have only 29 days.
 
+The  conversions are  valid before  sunset. It  is up  to the  user to
+assert the  need of incrementing  the Hebrew date or  decrementing the
+Gregorian date if the time of day is in the evening after sunset.
+
 =head1 SEE ALSO
 
 =head2 Perl 5 Software
@@ -279,6 +317,8 @@ L<Date::Convert>
 L<Date::Hebrew::Simple>
 
 L<Date::Converter> which I used as a model for the computations in this module.
+
+L<DateTime::Event::Jewish::Sunrise>
 
 =head2 Other Software
 
