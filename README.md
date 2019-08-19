@@ -14,7 +14,7 @@ my Date                   $TPC2019-Pittsburgh-grg;
 my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb;
 
 $TPC2019-Pittsburgh-grg .= new(2019, 6, 16);
-$TPC2019-Pittsburgh-heb = new-from-date($TPC2019-Pittsburgh-grg);
+$TPC2019-Pittsburgh-heb .= new-from-date($TPC2019-Pittsburgh-grg);
 
 say $TPC2019-Pittsburgh-heb;
 # --> 5779-03-13
