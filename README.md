@@ -10,10 +10,16 @@ Converting a Gregorian date (e.g. 16th June 2019) into Hebrew
 
 ```perl6
 use Date::Calendar::Hebrew;
-my Date                   $TPC2019-Pittsburgh-grg .= new(2019, 6, 16);
-my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb = new-from-date($TPC2019-Pittsburgh-grg);
-say $TPC2019-Pittsburgh-heb; # --> 5779-03-13
-say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb; # --> Yom Rishon 13 Sivan 5779
+my Date                   $TPC2019-Pittsburgh-grg;
+my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb;
+
+$TPC2019-Pittsburgh-grg .= new(2019, 6, 16);
+$TPC2019-Pittsburgh-heb = new-from-date($TPC2019-Pittsburgh-grg);
+
+say $TPC2019-Pittsburgh-heb;
+# --> 5779-03-13
+say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb;
+# --> Yom Rishon 13 Sivan 5779
 
 ```
 
@@ -21,10 +27,14 @@ Converting a Hebrew date (e.g. 6 Av 5779) into Gregorian
 
 ```perl6
 use Date::Calendar::Hebrew;
-my Date::Calendar::Hebrew $Perlcon-Riga-heb = new(year  => 5779
-                                                , month =>    5
-                                                , day   =>    6);
-my Date $Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
+my Date::Calendar::Hebrew $Perlcon-Riga-heb;
+my Date                   $Perlcon-Riga-grg;
+
+$Perlcon-Riga-heb .= new(year  => 5779
+                       , month =>    5
+                       , day   =>    6);
+$Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
+
 say $Perlcon-Riga-grg;
 
 ```

@@ -168,22 +168,32 @@ Converting a Gregorian date (e.g. 16th June 2019) into Hebrew
 =begin code :lang<perl6>
 
 use Date::Calendar::Hebrew;
-my Date                   $TPC2019-Pittsburgh-grg .= new(2019, 6, 16);
-my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb = new-from-date($TPC2019-Pittsburgh-grg);
-say $TPC2019-Pittsburgh-heb; # --> 5779-03-18
-say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb; # --> Yom Rishon 13 Sivan 5779
+my Date                   $TPC2019-Pittsburgh-grg;
+my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb;
+
+$TPC2019-Pittsburgh-grg .= new(2019, 6, 16);
+$TPC2019-Pittsburgh-heb = new-from-date($TPC2019-Pittsburgh-grg);
+
+say $TPC2019-Pittsburgh-heb;
+# --> 5779-03-13
+say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb;
+# --> Yom Rishon 13 Sivan 5779
 
 =end code
 
-Converting a Gregorian date (e.g. 16th June 2019) into Hebrew
+Converting an Hebrew date (e.g. 6 Av 5779) into Gregorian
 
 =begin code :lang<perl6>
 
 use Date::Calendar::Hebrew;
-my Date::Calendar::Hebrew $Perlcon-Riga-heb = new(year  => 5779
-                                                , month =>    5
-						, day   =>    6);
-my Date $Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
+my Date::Calendar::Hebrew $Perlcon-Riga-heb;
+my Date                   $Perlcon-Riga-grg;
+
+$Perlcon-Riga-heb .= new(year  => 5779
+                       , month =>    5
+                       , day   =>    6);
+$Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
+
 say $Perlcon-Riga-grg;
 
 =end code
@@ -259,14 +269,14 @@ based on 17 November 1858).
 =head3 to-date
 
 Clones  the   date  into   a  core  class   C<Date>  object   or  some
-C<Date::Calendar::>I<xxx> compatible calendar  class. The target class
+C<Date::Calendar::>R<xxx> compatible calendar  class. The target class
 name is given  as a positional parameter. This  parameter is optional,
 the default value is C<"Date"> for the Gregorian calendar.
 
 To convert a date from a  calendar to another, you have two conversion
 styles,  a "push"  conversion and  a "pull"  conversion. For  example,
-while converting from the astronomical  date "1 Vendémiaire IV" to the
-arithmetic variant, you can code:
+while  converting  "26  Tammuz   5779"  to  the  French  Revolutionary
+calendar, you can code:
 
 =begin code :lang<perl6>
 
