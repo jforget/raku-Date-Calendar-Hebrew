@@ -1,6 +1,6 @@
 use v6.c;
 use Date::Calendar::Hebrew::Names;
-use List::MoreUtils <before_incl before>;
+use List::MoreUtils <before>;
 
 unit class Date::Calendar::Hebrew:ver<0.0.2>:auth<cpan:JFORGET>;
 
