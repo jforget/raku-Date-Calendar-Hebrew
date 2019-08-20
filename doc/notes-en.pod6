@@ -1,0 +1,191 @@
+# -*- encoding: utf-8; indent-tabs-mode: nil -*-
+
+=begin pod
+
+=head1 Designer's Notes
+
+=head2 Preliminary
+
+This text presents the designer's notes for the Hebrew calendar
+module. A more complete text is available in the distribution
+for the French Revolutionary calendar.
+
+It is better to work with actual examples rather than generic values.
+So in the text below, I will use the following dates (Bastille day this
+year):
+
+  Sunday 14 July 2019
+  11 Tammuz 5779
+  11 Dhu al-Qada 1440
+  Sextdi 26 Messidor 227
+  13.0.6.11.16, 8 Cib, 4 Xul
+
+=head2 Purposes
+
+The various calendar module should obey the following contradictory
+purposes:
+
+=item A user can use as many or as few calendar as he wants. He can
+use none or all of them.
+
+=item Limit code duplication. Prefer DRY (Don't Repeat Yourself) over WET
+(Write Everything Twice).
+
+=item No alteration to the core modules, including C<Date>.
+
+=head2 First Idea: Roles Everywhere
+
+My first idea was to make intensive use of the novelty in Perl 6 POO, roles.
+Only the Gregorian calendar is implemented as a class C<Date>, all others are roles
+to C<Date>. Example:
+
+  my Date $bastille-day does Date::Calendar::Hebrew
+                        does Date::Calendar::Hijri
+                        does Date::Calendar::FrenchRevolutionary
+                        does Date::Calendar::Mayan
+            .= new(year => 2019, month => 7, day => 14);
+
+The first problem is the conflict between the methods of the various roles.
+If we use
+
+  say $bastille-day.month-name
+
+should we get C<Tammuz>, C<Dhu al-Qada> or C<Messidor>?
+Granted, after reading pages 226 and following of I<Learning Perl 6>,
+you can write;
+
+  say $bastille-day.month-name( Date::Calendar::FrenchRevolutionary );
+  # → Messidor
+  say $bastille-day.month-name( Date::Calendar::Hebrew );
+  # → Tammuz
+
+but it is cumbersome.
+
+The second problem is that the concept of date is not the same across different
+civilizations. The Gregorian and French Revolutionary calendars use midnight-to-midnight
+dates, while the Hijri and Hebrew calendars (and others) use sunset-to-sunset dates.
+The Julian Day Number calendar (not to be confused with the Julian calendar) uses
+noon-to-noon dates.
+And it is possible that some other calendars use sunrise-to-sunrise dates. So, while
+you can equate 14 July 2019 to 26 Messidor 227, you cannot equate it to 11 Tammuz
+5779. Usually, date conversion programs take the lazy path and mention in their documentation that
+the correspondance 14 July 2019 → 11 Tammuz 5779 is valid only until sunset,
+but we can imagine a hubristic programmer who would use two conversion routines
+or add a C<time-of-day> parameter to the conversion routine to get either
+
+  14 July 2019 → 11 Tammuz 5779
+
+or 
+
+  14 July 2019 → 12 Tammuz 5779
+
+With the Hebrew calendar as a role, that would not be possible, with the Hebrew
+calendar as a class, that would be possible. There are still a few problems,
+but at least we are not painted out in a corner.
+
+I found another reason when writing the French Revolutionary module.
+While there are reasons to allow negative years (or BC years) for the
+Julian and Gregorian calendars (even when considering that the Gregorian
+calendar took effect on 15 October 1582), there is no reason to take into
+account dates before the epochs of the other calendars. For example, 
+the French Revolutionary calendar's epoch is 22 September 1792, so
+the 21 September 1792 object should not be allowed to use the
+FrenchRevolutionary role's methods.
+
+So the solution is: one calendar = one class.
+
+=head2 Taking a look at C<Date>
+
+I did not bother to deal with times, so I will look at the 
+C<Date> core module instead of C<DateTime>.
+
+=head3 Day-Only Counting
+
+The first difference with Perl 5's C<DateTime> is that Perl 6's C<Date>
+uses the MJD or Modified Julian Day Number instead of I<Rata Die>.
+Fine with me.
+
+=head3 Immutability
+
+A second difference with Perl 5's C<DateTime>
+is that dates are immutable. Why not? It does not bother me.
+Therefore dates in a C<Date::Calendar::>R<Whatever> module will be
+immutable too (but see below for multilingual distributions).
+
+=head3 Localization
+
+Another difference with Perl 5 is that there is no provision for
+localized string values: month names and the like. Maybe it was
+thought that the main purpose of this module would be to manage
+schedules, timetables and the like, for which we need the numerical
+values of the days and months but not their string localized values.
+
+For those interested in localized values, there is the CPAN6 module
+C<Date::Names>.
+
+=head2 Simple Calendars
+
+As a simple calendar example, I will consider the Hebrew Calendar.
+In this discussion, simplicity is about the module architecture,
+not the conversion algorithms. So, with this point of view, the
+Hebrew calendar, with no variants, is a simple calendar.
+
+=head3 Calendar with one Locale
+
+In my opinion, calendar modules will be used to display dates, not to
+build schedules with them. I will keep the names in a separate module,
+but this module will be within the distribution. For example, the
+C<Date::Calendar::Hebrew> distribution will include both the
+C<Date::Calendar::Hebrew> module and the
+C<Date::Calendar::Hebrew::Names> module.
+
+So we will have:
+
+  class    Date::Calendar::Hebrew
+  routines Date::Calendar::Hebrew::Names
+
+=head3 Calendar with Several Locales
+
+If there  are different  languages and  different localizations  for a
+given calendar, I may put the mechanisms  and all the data in the same
+C<Date::Calendar::>R<Whatever>C<::Names>  module,  or I  may  separate
+them with  the mechanisms  in C<Date::Calendar::>R<Whatever>C<::Names>
+and    the   data    in   C<Date::Calendar::>R<Whatever>C<::Names::en>
+C<Date::Calendar::>R<Whatever>C<::Names::fr>,
+C<Date::Calendar::>R<Whatever>C<::Names::it>   and  others.   It  will
+depend on the size.
+
+In the case of the Hebrew calendar and the Hebrew, Yiddish and Aramaic
+languages, we would have:
+
+  class    Date::Calendar::Hebrew
+  routines Date::Calendar::Hebrew::Names
+  routines Date::Calendar::Hebrew::Names::he
+  routines Date::Calendar::Hebrew::Names::yi
+  routines Date::Calendar::Hebrew::Names::arc
+
+(Sorry, there is no 2-char ISO 639 code for Aramaic, so I have to fall
+back to the 3-char code.)
+
+Another     point    with     multi-localization    is     that    the
+C<Date::Calendar::>R<Whatever> objects will have a C<locale> attribute
+and  this  attribute will  be  read-write.  The  year, month  and  day
+attributes will still be readonly,  but the locale will be read-write.
+So the object  is not fully immutable. Using  the French Revolutionary
+calendar as an example, changing "Sextidi  26 Messidor 227, jour de la
+sauge" into "Sixday 26 Reapidor 227,  day of sage" is just a skin-deep
+cosmetic modification,  while changing "Sextidi 26  Messidor 227, jour
+de la sauge" into  "Septidi 27 Messidor 227, jour de  l'ail" is a deep
+modification of the date's inner self.
+
+=head2 Calendars with variants
+
+Please refer to the C<Date::Calendar::FrenchRevolutionary> distribution,
+which contains the full version of the present text.
+
+=head1 License
+
+This  text is  licensed  under  the terms  of  Creative Commons,  with
+attribution and share-alike (CC-BY-SA).
+
+=end pod
