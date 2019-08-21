@@ -116,11 +116,17 @@ sub ymdf-to-jed(Int $year, Int $month, Int $day --> Int) {
   # which gives a 29 or 30 result for the month length.
   # The currified form of this last function in APL syntax is
   #      { year month_days ⍵ }
-  # (I hope so, I have not checked the documentation). So with
-  # thse two lines
+  # (I hope so, I have not checked the documentation).
+  # So the first line
   #      V ← 6 ⌽ ⍳ year_months year
+  # gives the month numbers in the order in which they appear, 7 8 9 10 11 12 1 2 3 4 5 6
+  # (or  7 8 9 10 11 12 13 1 2 3 4 5 6 on leap years)
+  # The partial second line
+  #      (¯1 + V ⍳ month) ↑ V
+  # gives the list of months to process to obtain the number of days from the beginning
+  # of the year to the target month (not included).
+  # And the second line adds the number of days in the months before the target month
   #      +/ { year month_days ⍵ } [ (¯1 + V ⍳ month) ↑ V ]
-  # we get the number of days in the year before a given month.
 
   # Another important point: ymdf-to-jed calls month-days which calls year-days which calls ymdf-to-jed
   # What about a runaway recursion? 
@@ -239,7 +245,7 @@ Create an Hebrew date by giving the year, month and day numbers.
 
 Build an  Hebrew date by  cloning an  object from another  class. This
 other   class    can   be    the   core    class   C<Date>    or   any
-C<Date::Calendar::xxx> class with a C<daycount> method.
+C<Date::Calendar::>R<xxx> class with a C<daycount> method.
 
 =head3 new-from-daycount
 
@@ -261,7 +267,7 @@ The name of the day within  the week.
 
 =head3 daycount
 
-Convert the date to Modified Julian Day Number (a day-only scheme
+Convert  the date  to Modified  Julian Day  Number (a  day-only scheme
 based on 17 November 1858).
 
 =head2 Other Methods
