@@ -2,7 +2,7 @@ use v6.c;
 use Date::Calendar::Hebrew::Names;
 use List::MoreUtils <before>;
 
-unit class Date::Calendar::Hebrew:ver<0.0.2>:auth<cpan:JFORGET>;
+unit class Date::Calendar::Hebrew:ver<0.0.3>:auth<cpan:JFORGET>;
 
 has Int $.year  where { $_ ≥ 1 };
 has Int $.month where { 1 ≤ $_ ≤ 13 };
