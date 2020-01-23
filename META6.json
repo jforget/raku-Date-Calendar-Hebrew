@@ -16,7 +16,7 @@
     , "Date::Calendar::Hebrew::Names" : "lib/Date/Calendar/Hebrew/Names.pm6"
   },
   "resources"  : [ ],
-  "source-url" : "https://github.com/jforget/p6-Date-Calendar-Hebrew.git",
+  "source-url" : "https://github.com/jforget/raku-Date-Calendar-Hebrew.git",
   "tags" : [ ],
   "support" : {
     "email" : "JFORGET@cpan.org"
