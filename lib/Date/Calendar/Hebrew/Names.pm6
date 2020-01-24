@@ -27,6 +27,7 @@ our sub month-name(Int:D $month, Bool $leap = False --> Str) {
     return "Adar II";
   }
   return @month-names[$month - 1];
+}
 
 our sub month-abbr(Int:D $month, Bool $leap = False --> Str) {
   if $leap && $month == 12 {

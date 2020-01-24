@@ -16,6 +16,10 @@ method month-name {
   Date::Calendar::Hebrew::Names::month-name($.month, $.is-leap);
 }
 
+method month-abbr {
+  Date::Calendar::Hebrew::Names::month-abbr($.month, $.is-leap);
+}
+
 method day-name {
   Date::Calendar::Hebrew::Names::day-name(($.daycount + 3) % 7);
 }
@@ -261,6 +265,11 @@ The numbers defining the date.
 
 The month of the date, as a string.
 
+=head3 month-abbr
+
+The month of the  date, as a 3-char string (or  less, because of month
+Av).
+
 =head3 day-name
 
 The name of the day within  the week.
@@ -281,8 +290,8 @@ the default value is C<"Date"> for the Gregorian calendar.
 
 To convert a date from a  calendar to another, you have two conversion
 styles,  a "push"  conversion and  a "pull"  conversion. For  example,
-while  converting  "26  Tammuz   5779"  to  the  French  Revolutionary
-calendar, you can code:
+while converting "26 Tamuz 5779" to the French Revolutionary calendar,
+you can code:
 
 =begin code :lang<perl6>
 
@@ -313,14 +322,28 @@ The  validation  of  C<new>  parameters  is  very  basic.  Especially,
 checking the month  number ignores the year's nature  (leap or normal)
 and you can create a date in Adar II for a normal year. Also, checking
 the  day number  ignores the  month value  and you  can create  a 30th
-Iyyar, a  30th Tammuz,  a 30th  Elul or  a 30th  Tevet, even  if these
-months have only 29 days.
+Iyyar, a 30th Tamuz, a 30th Elul or a 30th Tevet, even if these months
+have only 29 days.
 
 The  conversions are  valid before  sunset. It  is up  to the  user to
 assert the  need of incrementing  the Hebrew date or  decrementing the
 Gregorian date if the time of day is in the evening after sunset.
 
+I have found  no source for day abbreviations, so  only the months are
+abbreviated.
+
 =head1 SEE ALSO
+
+=head2 Raku Software
+
+L<Date::Calendar::Strftime>
+or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
+
+L<Date::Calendar::CopticEthiopic>
+or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
+
+L<Date::Calendar::FrenchRevolutionary>
+or L<https://github.com/jforget/Date-Calendar-FrenchRevolutionary>
 
 =head2 Perl 5 Software
 
