@@ -1,18 +1,22 @@
 use v6.c;
 unit class Date::Calendar::Hebrew::Names:ver<0.0.3>:auth<cpan:JFORGET>;
 
-my @month-names = <Nisan      Iyyar    Sivan
-                   Tammuz     Av       Elul
-                   Tishri     Sheshvan Kislev
-                   Tevet      Shevat   Adar>
+my @month-names = <Nisan    Iyar    Sivan
+                   Tamuz    Av      Elul
+                   Tishrey  Heshvan Kislev
+                   Tevet    Shvat   Adar >
+;
+
+my @month-abbr = < Nis Iya Siv Tam Av  Elu
+                   Tis Hes Kis Tev Shv Ada >
 ;
 my @day-names = ( "Yom Rishon"
                 , "Yom Sheni"
-                , "Yom Shelishi"
-                , "Yom Revil"
-                , "Yom Hamishi"
+                , "Yom Shlishi"
+                , "Yom Reviʻi"
+                , "Yom Chamishi"
                 , "Yom Shishi"
-                , "Shabbat"
+                , "Yom Shabbat"
 );
 
 our sub month-name(Int:D $month, Bool $leap = False --> Str) {
@@ -23,6 +27,15 @@ our sub month-name(Int:D $month, Bool $leap = False --> Str) {
     return "Adar II";
   }
   return @month-names[$month - 1];
+
+our sub month-abbr(Int:D $month, Bool $leap = False --> Str) {
+  if $leap && $month == 12 {
+    return "Ad1";
+  }
+  if $leap && $month == 13 {
+    return "Ad2";
+  }
+  return @month-abbr[$month - 1];
 }
 
 our sub day-name(Int:D $day7 --> Str) {
@@ -48,6 +61,13 @@ use Date::Calendar::Hebrew;
 
 Date::Calendar::Hebrew::Names is a utility module, providing
 string values for the main module Date::Calendar::Hebrew.
+
+=head1 SOURCES
+
+The day names come from L<https://en.wikipedia.org/wiki/Hebrew_calendar>.
+
+The month names and abbreviations come from
+L<https://api.kde.org/4.x-api/kdelibs-apidocs/kdecore/html/kcalendarsystemhebrew_8cpp_source.html>
 
 =head1 SEE ALSO
 
