@@ -93,10 +93,10 @@ sub delay_2(Int $year --> Int) {
   }
 }
 
-# 29-day months: Iyyar, Tanmuz, Elul, Sheshvan (on 353, 354, 383 and 384-day years),
+# 29-day months: Iyar, Tamuz, Elul, Heshvan (on 353, 354, 383 and 384-day years),
 #                Kislev (on 353 and 383-day years), Tevet, Adar (when non leap) and Adar II (when leap)
-# 30-day months: Nisan, Sivan, Av, Tishri, Sheshvan (on 355 and 385-day years),
-#                Kislev (on 354, 355, 384 and 385-day years), Shevet and Adar I (when leap)
+# 30-day months: Nisan, Sivan, Av, Tishrey, Heshvan (on 355 and 385-day years),
+#                Kislev (on 354, 355, 384 and 385-day years), Shvat and Adar I (when leap)
 sub month-days(Int $year, Int $month --> Int) {
  return 29 if $month ==  2 | 4 | 6 | 10 | 13;
  return 29 if $month == 12 && ! is-leap($year);
@@ -232,10 +232,10 @@ year to the next occurs when switching  from month 6 to month 7. So we
 have the following:
 
   2019-04-05   5779-13-29 Yom Shishi 29 Adar II 5779
-  2019-04-06   5779-01-01 Shabbat 1 Nisan 5779 --> no change of year
+  2019-04-06   5779-01-01 Yom Shabbat 1 Nisan 5779 --> no change of year
   ...
   2019-09-29   5779-06-29 Yom Rishon 29 Elul 5779
-  2019-09-30   5780-07-01 Yom Sheni 1 Tishri 5780 --> new year
+  2019-09-30   5780-07-01 Yom Sheni 1 Tishrey 5780 --> new year
 
 =head1 METHODS
 
@@ -321,9 +321,9 @@ the style you prefer.
 The  validation  of  C<new>  parameters  is  very  basic.  Especially,
 checking the month  number ignores the year's nature  (leap or normal)
 and you can create a date in Adar II for a normal year. Also, checking
-the  day number  ignores the  month value  and you  can create  a 30th
-Iyyar, a 30th Tamuz, a 30th Elul or a 30th Tevet, even if these months
-have only 29 days.
+the day number ignores the month value and you can create a 30th Iyar,
+a 30th Tamuz, a  30th Elul or a 30th Tevet, even  if these months have
+only 29 days.
 
 The  conversions are  valid before  sunset. It  is up  to the  user to
 assert the  need of incrementing  the Hebrew date or  decrementing the
@@ -343,7 +343,7 @@ L<Date::Calendar::CopticEthiopic>
 or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
 
 L<Date::Calendar::FrenchRevolutionary>
-or L<https://github.com/jforget/Date-Calendar-FrenchRevolutionary>
+or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
 
 =head2 Perl 5 Software
 

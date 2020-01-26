@@ -1,7 +1,8 @@
 Revision history for Date-Calendar-Hebrew
 
 0.0.3, released on...
-    - renaming the repository, "raku" instead of "p6"
+    - renaming the repository, using "raku" prefix instead of "p6"
+    - double-check typos in the month names and day names
 
 0.0.2, released on Wednesday 2019-08-21
     - Fix typos in the documentation
