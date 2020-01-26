@@ -5,7 +5,7 @@ use v6.c;
 use Test;
 use Date::Calendar::Hebrew;
 
-plan  16;
+plan  18;
 
 my Date::Calendar::Hebrew $d .= new(year => 5779, month => 4, day => 19);
 
@@ -33,5 +33,10 @@ $d .= new(year => 5779, month => 13, day => 19);
 is($d.gist      , '5779-13-19');
 is($d.month-name, 'Adar II');
 is($d.month-abbr, 'Ad2');
+
+# Av month
+$d .= new(year => 5780, month =>  5, day => 10);
+is($d.month-name, 'Av');
+is($d.month-abbr, 'Av '); # 3-char abbreviation for a 2-char month!
 
 done-testing;

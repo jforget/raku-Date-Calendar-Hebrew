@@ -7,8 +7,8 @@ my @month-names = <Nisan    Iyar    Sivan
                    Tevet    Shvat   Adar >
 ;
 
-my @month-abbr = < Nis Iya Siv Tam Av  Elu
-                   Tis Hes Kis Tev Shv Ada >
+my @month-abbr = Q :ww< Nis Iya Siv Tam 'Av ' Elu
+                        Tis Hes Kis Tev  Shv  Ada >
 ;
 my @day-names = ( "Yom Rishon"
                 , "Yom Sheni"

@@ -267,8 +267,13 @@ The month of the date, as a string.
 
 =head3 month-abbr
 
-The month of the  date, as a 3-char string (or  less, because of month
-Av).
+The month of the  date, as a 3-char string.
+
+This is  always a 3-char  string, even for  month "Av". The  reason is
+that the  abbreviations are often used  in tables and arrays  so that,
+when  typescripted  with  a  constant-width font,  keep  the  vertical
+alignment of the table elements. Therefore, the abbreviation is 3-char
+for all months.
 
 =head3 day-name
 
