@@ -8,6 +8,34 @@ has Int $.year  where { $_ ≥ 1 };
 has Int $.month where { 1 ≤ $_ ≤ 13 };
 has Int $.day   where { 1 ≤ $_ ≤ 30 };
 
+method BUILD(Int:D :$year, Int:D :$month, Int:D :$day) {
+  $._chek-build-args($year, $month, $day);
+  $._build-from-args($year, $month, $day);
+}
+
+method _chek-build-args(Int $year, Int $month, Int $day) {
+  if is-leap($year) {
+    unless 1 ≤ $month ≤ 13 {
+      X::OutOfRange.new(:what<Month>, :got($month), :range<1..13 for a leap year>).throw;
+    }
+  }
+  else {
+    unless 1 ≤ $month ≤ 12 {
+      X::OutOfRange.new(:what<Month>, :got($month), :range<1..12 for a normal year>).throw;
+    }
+  }
+  my $limit =  month-days($year, $month);
+  if $day == 0 || $day > $limit {
+    X::OutOfRange.new(:what<Day>, :got($day), :range("1..$limit for this month and this year")).throw;
+  }
+}
+
+method _build-from-args(Int $year, Int $month, Int $day) {
+  $!year   = $year;
+  $!month  = $month;
+  $!day    = $day;
+}
+
 method gist {
   sprintf("%04d-%02d-%02d", $.year, $.month, $.day);
 }
