@@ -5,6 +5,7 @@ Revision history for Date-Calendar-Hebrew
     - double-check typos in the month names and day names
     - add abbreviations for the months
     - better parameter checks
+    - use role to get a strftime method
 
 0.0.2, released on Wednesday 2019-08-21
     - Fix typos in the documentation

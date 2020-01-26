@@ -1,8 +1,10 @@
 use v6.c;
+use Date::Calendar::Strftime;
 use Date::Calendar::Hebrew::Names;
 use List::MoreUtils <before>;
 
-unit class Date::Calendar::Hebrew:ver<0.0.3>:auth<cpan:JFORGET>;
+unit class Date::Calendar::Hebrew:ver<0.0.3>:auth<cpan:JFORGET>
+      does Date::Calendar::Strftime;
 
 has Int $.year  where { $_ ≥ 1 };
 has Int $.month where { 1 ≤ $_ ≤ 13 };
@@ -216,6 +218,8 @@ say $TPC2019-Pittsburgh-heb;
 # --> 5779-03-13
 say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb;
 # --> Yom Rishon 13 Sivan 5779
+say $TPC2019-Pittsburgh-heb.strftime("%A %d %B %Y");
+# --> Yom Rishon 13 Sivan 5779
 
 =end code
 
@@ -350,13 +354,6 @@ the style you prefer.
 
 
 =head1 PROBLEMS AND KNOWN BUGS
-
-The  validation  of  C<new>  parameters  is  very  basic.  Especially,
-checking the month  number ignores the year's nature  (leap or normal)
-and you can create a date in Adar II for a normal year. Also, checking
-the day number ignores the month value and you can create a 30th Iyar,
-a 30th Tamuz, a  30th Elul or a 30th Tevet, even  if these months have
-only 29 days.
 
 The  conversions are  valid before  sunset. It  is up  to the  user to
 assert the  need of incrementing  the Hebrew date or  decrementing the

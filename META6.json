@@ -6,6 +6,7 @@
   "build-depends" : [ ],
   "depends"       : [
       "List::MoreUtils"
+    , "Date::Calendar::Strftime"
   ],
   "description" : "Conversions from / to the Hebrew calendar",
   "license"     : "Artistic-2.0",
