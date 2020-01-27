@@ -319,6 +319,10 @@ Build an Hebrew date from the Modified Julian Day number.
 
 =head2 Accessors
 
+=head3 gist
+
+Gives a short string representing the date, in C<YYYY-MM-DD> format.
+
 =head3 year, month, day
 
 The numbers defining the date.
@@ -345,6 +349,34 @@ The name of the day within  the week.
 
 Convert  the date  to Modified  Julian Day  Number (a  day-only scheme
 based on 17 November 1858).
+
+=head3 day-of-week
+
+The number of  the day within the  week (1 for Sunday /  Yom Rishon, 7
+for Saturday / Yom Shabbat).
+
+=head3 week-number
+
+The number of the  week within the year, 1 to 50 or  1 to 51 on normal
+years, 1 to 54 or 1 to 55  on leap years. Similar to the "ISO date" as
+defined for  Gregorian date. Week  number 1  is the Sun→Sat  span that
+contains the first  Wednesday / Yom Revi'i of the  year, week number 2
+is the Sun→Sat span that contains the second Wednesday / Yom Revi'i of
+the year and so on.
+
+=head3 week-year
+
+Mostly similar  to the C<year>  attribute. Yet,  the last days  of the
+year  and  the  first  days  of the  following  year  can  be  sort-of
+transferred  to the  other year.  The C<week-year>  attribute reflects
+this transfer.  While the real year  always begins on 1st  Tishrey and
+ends on the 29th Elul, the  C<week-year> always begins on Sunday / Yom
+Rishon and it always ends on Saturday / Yom Shabbat.
+
+=head3 day-of-year
+
+How many  days since the beginning  of the year.  1 to 353 (or  354 or
+355) on normal years, 1 to 383 (or 384 or 385) on leap years.
 
 =head2 Other Methods
 
