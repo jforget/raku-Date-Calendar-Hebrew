@@ -352,6 +352,127 @@ I<to> Gregorian, use the push style. When converting from any calendar
 other than Gregorian  to any other calendar other  than Gregorian, use
 the style you prefer.
 
+=head3 strftime
+
+This method is  very similar to the homonymous functions  you can find
+in several  languages (C, shell, etc).  It also takes some  ideas from
+C<printf>-similar functions. For example
+
+=begin code :lang<perl6>
+
+$df.strftime("%04d blah blah blah %-25B")
+
+=end code
+
+will give  the day number  padded on  the left with  2 or 3  zeroes to
+produce a 4-digit substring, plus the substring C<" blah blah blah ">,
+plus the month name, padded on the right with enough spaces to produce
+a 25-char substring. Thus, the whole  string will be at least 42 chars
+long. By  the way, you  can drop the  "at least" mention,  because the
+longest month  name is 7-char long,  so the padding will  always occur
+and will always include at least 18 spaces.
+
+A C<strftime> specifier consists of:
+
+=item A percent sign,
+
+=item An  optional minus sign, to  indicate on which side  the padding
+occurs. If the minus sign is present, the value is aligned to the left
+and the padding spaces are added to the right. If it is not there, the
+value is aligned to the right and the padding chars (spaces or zeroes)
+are added to the left.
+
+=item  An  optional  zero  digit,  to  choose  the  padding  char  for
+right-aligned values.  If the  zero char is  present, padding  is done
+with zeroes. Else, it is done wih spaces.
+
+=item An  optional length, which  specifies the minimum length  of the
+result substring.
+
+=item  An optional  C<"E">  or  C<"O"> modifier.  On  some older  UNIX
+system,  these  were used  to  give  the I<extended>  or  I<localized>
+version  of  the date  attribute.  Here,  they rather  give  alternate
+variants of the date attribute. Not used with the Hebrew calendar.
+
+=item A mandatory type code.
+
+The allowed type codes are:
+
+=defn C<%A>
+
+The full day of week name.
+
+=defn C<%b>
+
+The abbreviated month name.
+
+=defn C<%B>
+
+The full month name.
+
+=defn C<%d>
+
+The day of the month as a decimal number (range 01 to 30).
+
+=defn C<%e>
+
+Like C<%d>, the  day of the month  as a decimal number,  but a leading
+zero is replaced by a space.
+
+=defn C<%f>
+
+The month as a decimal number (1  to 13). Unlike C<%m>, a leading zero
+is replaced by a space.
+
+=defn C<%F>
+
+Equivalent to %Y-%m-%d (the ISO 8601 date format)
+
+=defn C<%G>
+
+The "week year"  as a decimal number. Mostly similar  to C<%Y>, but it
+may differ  on the very  first days  of the year  or on the  very last
+days. Analogous to the year number  in the so-called "ISO date" format
+for Gregorian dates.
+
+=defn C<%j>
+
+The day of the year as a decimal number (range 001 to 385).
+
+=defn C<%L>
+
+Redundant with C<%Y> and strongly discouraged: the year number.
+
+=defn C<%m>
+
+The month as a two-digit decimal  number (range 01 to 13), including a
+leading zero if necessary.
+
+=defn C<%n>
+
+A newline character.
+
+=defn C<%t>
+
+A tab character.
+
+=defn C<%u>
+
+The day of week as a 1..7 number.
+
+=defn C<%V>
+
+The week number as defined above, similar to the week number in the
+so-called "ISO date" format for Gregorian dates.
+
+=defn C<%Y>
+
+The year as a decimal number.
+
+=defn C<%%>
+
+A literal `%' character.
+
 
 =head1 PROBLEMS AND KNOWN BUGS
 
