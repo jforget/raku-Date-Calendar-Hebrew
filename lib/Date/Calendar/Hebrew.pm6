@@ -9,6 +9,11 @@ unit class Date::Calendar::Hebrew:ver<0.0.3>:auth<cpan:JFORGET>
 has Int $.year  where { $_ ≥ 1 };
 has Int $.month where { 1 ≤ $_ ≤ 13 };
 has Int $.day   where { 1 ≤ $_ ≤ 30 };
+has Int $.daycount;
+has Int $.day-of-year;
+has Int $.day-of-week;
+has Int $.week-number;
+has Int $.week-year;
 
 method BUILD(Int:D :$year, Int:D :$month, Int:D :$day) {
   $._chek-build-args($year, $month, $day);
@@ -36,6 +41,35 @@ method _build-from-args(Int $year, Int $month, Int $day) {
   $!year   = $year;
   $!month  = $month;
   $!day    = $day;
+
+  # computing derived attributes
+  my Int $jed        = ymdf-to-jed($year, $month, $day);
+  my Int $daycount   = $jed - mjd-to-jed();
+  my Int $doy        = $jed - ymdf-to-jed($year, 7, 1) + 1;
+  my Int $dow        = ($daycount + 3) % 7 + 1;
+  my Int $doy-revi'i = $doy - $dow + 4; # day-of-year value for the nearest Yom Revi'i / Wednesday
+  my Int $week-year  = $year;
+  if $doy-revi'i ≤ 0 {
+    -- $week-year;
+    $doy       += year-days($week-year);
+    $doy-revi'i = $doy - $dow + 4;
+  }
+  else {
+    my $year-length = year-days($week-year);
+    if $doy-revi'i > $year-length {
+      $doy       -= $year-length;
+      $doy-revi'i = $doy - $dow + 4;
+      ++ $week-year;
+    }
+  }
+  my Int $week-number = ($doy-revi'i / 7).ceiling;
+
+  # storing derived attributes
+  $!day-of-year = $doy;
+  $!day-of-week = $dow;
+  $!daycount    = $daycount;
+  $!week-number = $week-number;
+  $!week-year   = $week-year;
 }
 
 method gist {
@@ -51,15 +85,11 @@ method month-abbr {
 }
 
 method day-name {
-  Date::Calendar::Hebrew::Names::day-name(($.daycount + 3) % 7);
+  Date::Calendar::Hebrew::Names::day-name($.day-of-week - 1);
 }
 
 method is-leap {
   is-leap($.year);
-}
-
-method daycount {
-  ymdf-to-jed($.year, $.month, $.day) - mjd-to-jed();
 }
 
 method new-from-date($date) {
@@ -170,11 +200,11 @@ sub ymdf-to-jed(Int $year, Int $month, Int $day --> Int) {
   my @V = (1 .. year-months $year);
 
   return  epoch()
-	 + delay_1($year)
-	 + delay_2($year)
-	 + $day + 1
-	 + [+] map { month-days($year, $_) }, (before { $_ == $month }, @V.rotate(6))
-	 ;
+         + delay_1($year)
+         + delay_2($year)
+         + $day + 1
+         + [+] map { month-days($year, $_) }, (before { $_ == $month }, @V.rotate(6))
+         ;
 }
 
 sub jed-to-ymdf(Int $jed) {
