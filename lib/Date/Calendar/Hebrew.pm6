@@ -47,6 +47,13 @@ method _build-from-args(Int $year, Int $month, Int $day) {
   my Int $daycount   = $jed - mjd-to-jed();
   my Int $doy        = $jed - ymdf-to-jed($year, 7, 1) + 1;
   my Int $dow        = ($daycount + 3) % 7 + 1;
+
+  # storing derived attributes
+  $!day-of-year = $doy;
+  $!day-of-week = $dow;
+  $!daycount    = $daycount;
+
+  # computing week-related derived attributes
   my Int $doy-revi'i = $doy - $dow + 4; # day-of-year value for the nearest Yom Revi'i / Wednesday
   my Int $week-year  = $year;
   if $doy-revi'i ≤ 0 {
@@ -64,10 +71,7 @@ method _build-from-args(Int $year, Int $month, Int $day) {
   }
   my Int $week-number = ($doy-revi'i / 7).ceiling;
 
-  # storing derived attributes
-  $!day-of-year = $doy;
-  $!day-of-week = $dow;
-  $!daycount    = $daycount;
+  # storing week-related derived attributes
   $!week-number = $week-number;
   $!week-year   = $week-year;
 }

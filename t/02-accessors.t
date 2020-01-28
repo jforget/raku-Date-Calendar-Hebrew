@@ -5,7 +5,7 @@ use v6.c;
 use Test;
 use Date::Calendar::Hebrew;
 
-plan  18;
+plan  21;
 
 my Date::Calendar::Hebrew $d .= new(year => 5779, month => 4, day => 19);
 
@@ -39,4 +39,11 @@ $d .= new(year => 5780, month =>  5, day => 10);
 is($d.month-name, 'Av');
 is($d.month-abbr, 'Av '); # 3-char abbreviation for a 2-char month!
 
+# Elul
+$d .= new(year => 5778, month =>  6, day => 29);
+is($d.day-of-year, 354);
+$d .= new(year => 5779, month =>  6, day => 29);
+is($d.day-of-year, 385);
+$d .= new(year => 5780, month =>  6, day => 29);
+is($d.day-of-year, 355);
 done-testing;
