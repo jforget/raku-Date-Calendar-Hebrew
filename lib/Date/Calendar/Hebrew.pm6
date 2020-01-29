@@ -341,7 +341,7 @@ The month of the  date, as a 3-char string.
 
 This is  always a 3-char  string, even for  month "Av". The  reason is
 that the  abbreviations are often used  in tables and arrays  so that,
-when  typescripted  with  a  constant-width font,  keep  the  vertical
+when typescripted  with a constant-width  font, it keeps  the vertical
 alignment of the table elements. Therefore, the abbreviation is 3-char
 for all months.
 
@@ -528,7 +528,7 @@ The day of week as a 1..7 number.
 
 =defn C<%V>
 
-The week number as defined above, similar to the week number in the
+The week  number as defined above,  similar to the week  number in the
 so-called "ISO date" format for Gregorian dates.
 
 =defn C<%Y>
@@ -561,6 +561,9 @@ or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
 
 L<Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
+
+Maybe someday, L<Date::Calendar::Julian>
+or L<https://github.com/jforget/raku-Date-Calendar-Julian>
 
 =head2 Perl 5 Software
 

@@ -1,8 +1,6 @@
 #
 # Checking the formatting from strftime
 #
-# Work in progress
-#
 use v6.c;
 use Test;
 use Date::Calendar::Hebrew;
