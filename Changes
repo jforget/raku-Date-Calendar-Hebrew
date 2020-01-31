@@ -1,5 +1,8 @@
 Revision history for Date-Calendar-Hebrew
 
+0.0.4, released on...
+    - ...
+
 0.0.3, released on Friday 2020-01-31 or Yom Shishi 05 Shvat 5780
     - renaming the repository, using "raku" prefix instead of "p6"
     - double-check typos in the month names and day names

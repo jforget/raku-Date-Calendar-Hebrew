@@ -1,5 +1,5 @@
 use v6.c;
-unit class Date::Calendar::Hebrew::Names:ver<0.0.3>:auth<cpan:JFORGET>;
+unit class Date::Calendar::Hebrew::Names:ver<0.0.4>:auth<cpan:JFORGET>;
 
 my @month-names = <Nisan    Iyar    Sivan
                    Tamuz    Av      Elul
