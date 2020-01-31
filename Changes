@@ -1,15 +1,15 @@
 Revision history for Date-Calendar-Hebrew
 
-0.0.3, released on...
+0.0.3, released on Friday 2020-01-31 or Yom Shishi 05 Shvat 5780
     - renaming the repository, using "raku" prefix instead of "p6"
     - double-check typos in the month names and day names
     - add abbreviations for the months
     - better parameter checks
-    - use role to get a strftime method
+    - use Date::Calendar::Strftime role to get a strftime method
 
-0.0.2, released on Wednesday 2019-08-21
+0.0.2, released on Wednesday 2019-08-21 or Yom Reviʻi 20 Av 5779
     - Fix typos in the documentation
     - missing depency in META6.json
 
-0.0.1, released on Tuesday 2019-07-23
+0.0.1, released on Tuesday 2019-07-23, or Yom Shlishi 20 Tamuz 5779
     - Initial version
