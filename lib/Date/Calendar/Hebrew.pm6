@@ -413,10 +413,13 @@ $d-dest-pull .= new-from-date($d-orig);
 
 =end code
 
-When converting I<from> Gregorian, use the pull style. When converting
-I<to> Gregorian, use the push style. When converting from any calendar
-other than Gregorian  to any other calendar other  than Gregorian, use
-the style you prefer.
+When converting  I<from> the core  class C<Date>, use the  pull style.
+When converting I<to> the core class C<Date>, use the push style. When
+converting from  any class other  than the  core class C<Date>  to any
+other  class other  than the  core class  C<Date>, use  the style  you
+prefer. For the Gregorian calendar, instead of the core class C<Date>,
+you can use the  child class C<Date::Calendar::Gregorian> which allows
+both push and pull styles.
 
 =head3 strftime
 
@@ -556,14 +559,20 @@ abbreviated.
 L<Date::Calendar::Strftime>
 or L<https://github.com/jforget/raku-Date-Calendar-Strftime>
 
+L<Date::Calendar::Gregorian>
+or L<https://github.com/jforget/raku-Date-Calendar-Gregorian>
+
+L<Date::Calendar::Julian>
+or L<https://github.com/jforget/raku-Date-Calendar-Julian>
+
 L<Date::Calendar::CopticEthiopic>
 or L<https://github.com/jforget/raku-Date-Calendar-CopticEthiopic>
 
+L<Date::Calendar::MayaAztec>
+or L<https://github.com/jforget/raku-Date-Calendar-MayaAztec>
+
 L<Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
-
-Maybe someday, L<Date::Calendar::Julian>
-or L<https://github.com/jforget/raku-Date-Calendar-Julian>
 
 =head2 Perl 5 Software
 
