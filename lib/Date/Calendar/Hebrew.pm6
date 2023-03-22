@@ -176,6 +176,10 @@ sub year-days(Int $year --> Int) {
 
 sub ymdf-to-jed(Int $year, Int $month, Int $day --> Int) {
   # Not directly translated from Perl 5 into Perl 6, but Perl 5 → APL → Perl 6
+  #
+  #      V ← 6 ⌽ ⍳ year_months year
+  #      +/ { year month_days ⍵ } [ (¯1 + V ⍳ month) ↑ V ]
+  #
   # We suppose we have already a function with signature
   #      R ← year_months Y
   # which gives a 12 or 13 result depending on the year type (normal / leap)
@@ -197,7 +201,7 @@ sub ymdf-to-jed(Int $year, Int $month, Int $day --> Int) {
   #      +/ { year month_days ⍵ } [ (¯1 + V ⍳ month) ↑ V ]
 
   # Another important point: ymdf-to-jed calls month-days which calls year-days which calls ymdf-to-jed
-  # What about a runaway recursion? 
+  # What about a runaway recursion?
   # No worries. As long as year-days calls ymdf-to-jed with a month parameter equal to 7, this instance of
   # ymdf-to-jed will deal with an empty list of month numbers, so it will not call month-days again.
 
@@ -574,6 +578,17 @@ or L<https://github.com/jforget/raku-Date-Calendar-MayaAztec>
 L<Date::Calendar::FrenchRevolutionary>
 or L<https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary>
 
+L<Date::Calendar::Hijri>
+or L<https://github.com/jforget/raku-Date-Calendar-Hijri>
+
+L<Date::Calendar::Persian>
+or L<https://github.com/jforget/raku-Date-Calendar-Persian>
+
+L<Date::Calendar::Bahai>
+or L<https://github.com/jforget/raku-Date-Calendar-Bahai>
+
+L<Calendar::Jewish|https://github.com/tbrowder/Calendar-Jewish>
+
 =head2 Perl 5 Software
 
 L<DateTime>
@@ -623,7 +638,7 @@ was the basis of the computations in this module.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright © 2019, 2020 Jean Forget, all rights reserved
+Copyright © 2019, 2020, 2023 Jean Forget, all rights reserved
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

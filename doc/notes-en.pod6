@@ -75,7 +75,7 @@ or add a C<time-of-day> parameter to the conversion routine to get either
 
   14 July 2019 → 11 Tammuz 5779
 
-or 
+or
 
   14 July 2019 → 12 Tammuz 5779
 
@@ -87,7 +87,7 @@ I found another reason when writing the French Revolutionary module.
 While there are reasons to allow negative years (or BC years) for the
 Julian and Gregorian calendars (even when considering that the Gregorian
 calendar took effect on 15 October 1582), there is no reason to take into
-account dates before the epochs of the other calendars. For example, 
+account dates before the epochs of the other calendars. For example,
 the French Revolutionary calendar's epoch is 22 September 1792, so
 the 21 September 1792 object should not be allowed to use the
 FrenchRevolutionary role's methods.
@@ -96,7 +96,7 @@ So the solution is: one calendar = one class.
 
 =head2 Taking a look at C<Date>
 
-I did not bother to deal with times, so I will look at the 
+I did not bother to deal with times, so I will look at the
 C<Date> core module instead of C<DateTime>.
 
 =head3 Day-Only Counting

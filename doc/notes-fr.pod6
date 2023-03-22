@@ -54,7 +54,7 @@ divers rôles. Si nous codons :
   say $quatorze-juillet.month-name
 
 obtiendrons-nous C<Tammuz>, C<Dhu al-Qada> ou C<Messidor> ?
-D'accord, il suffit de lire la page 226 et les suivantes de 
+D'accord, il suffit de lire la page 226 et les suivantes de
 I<Learning Perl 6> et l'on apprend que l'on peut écrire :
 
   say $quatorze-juillet.month-name( Date::Calendar::FrenchRevolutionary );

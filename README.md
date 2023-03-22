@@ -70,7 +70,7 @@ Jean Forget <JFORGET@cpan.org>
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright © 2019, 2020 Jean Forget, all rights reserved
+Copyright © 2019, 2020, 2023 Jean Forget, all rights reserved
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
