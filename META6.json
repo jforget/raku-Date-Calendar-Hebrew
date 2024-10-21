@@ -20,7 +20,7 @@
   "resources"  : [ ],
   "source-url" : "https://github.com/jforget/raku-Date-Calendar-Hebrew.git",
   "support" : {
-    "email" : "JFORGET@cpan.org"
+    "email" : "J2N-FORGET@orange.fr"
   },
   "tags" : [
       "date"

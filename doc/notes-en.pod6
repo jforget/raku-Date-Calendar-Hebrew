@@ -120,8 +120,8 @@ thought that the main purpose of this module would be to manage
 schedules, timetables and the like, for which we need the numerical
 values of the days and months but not their string localized values.
 
-For those interested in localized values, there is the CPAN6 module
-C<Date::Names>.
+For those  interested in localized  values, there  is the zef  / CPAN6
+module C<Date::Names>.
 
 =head2 Simple Calendars
 

@@ -134,7 +134,7 @@ d'horaires ou la planification de tâches,  ce qui ne nécessite que les
 valeurs numériques des jours et des mois, pas les noms en clair.
 
 Et  si vous  avez quand  même besoin  des noms  en clair,  vous pouvez
-installer et utiliser C<Date::Names> disponible sur CPAN6.
+installer et utiliser C<Date::Names> disponible sur zef ou CPAN6.
 
 =head2 Calendrier simple
 

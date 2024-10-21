@@ -65,7 +65,7 @@ possibly other) calendar and the other way.
 AUTHOR
 ======
 
-Jean Forget <JFORGET@cpan.org>
+Jean Forget <J2N-FORGET at orange dot fr>
 
 COPYRIGHT AND LICENSE
 =====================
