@@ -1,5 +1,6 @@
 {
-  "auth" : "cpan:JFORGET",
+  "api" : "0",
+  "auth" : "zef:jforget",
   "authors" : [
     "Jean Forget"
   ],

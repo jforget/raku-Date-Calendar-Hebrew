@@ -3,7 +3,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Hebrew::Names;
 use List::MoreUtils <before>;
 
-unit class Date::Calendar::Hebrew:ver<0.0.4>:auth<cpan:JFORGET>
+unit class Date::Calendar::Hebrew:ver<0.0.4>:auth<zef:jforget>:api<0>
       does Date::Calendar::Strftime;
 
 has Int $.year  where { $_ ≥ 1 };

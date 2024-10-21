@@ -1,7 +1,9 @@
 Revision history for Date-Calendar-Hebrew
 
 0.0.4, released on...
-    - ...
+    - add an "api" property to the classes
+    - migration from CPAN6 to zef
+    - fewer t/*.t tests and adding xt/*.t tests
 
 0.0.3, released on Friday 2020-01-31 or Yom Shishi 05 Shvat 5780
     - renaming the repository, using "raku" prefix instead of "p6"
