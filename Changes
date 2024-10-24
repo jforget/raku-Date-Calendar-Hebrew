@@ -1,6 +1,6 @@
 Revision history for Date-Calendar-Hebrew
 
-0.0.4, released on...
+0.0.4, released on Thursday 2024-10-24 or Yom Chamishi 22 Tishrey 5785
     - add an "api" property to the classes
     - migration from CPAN6 to zef
     - fewer t/*.t tests and adding xt/*.t tests
