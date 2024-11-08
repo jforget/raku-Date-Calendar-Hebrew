@@ -14,10 +14,11 @@ has Int $.day-of-year;
 has Int $.day-of-week;
 has Int $.week-number;
 has Int $.week-year;
+has Int $.daypart where { before-sunrise() ≤ $_ ≤ after-sunset() };
 
-method BUILD(Int:D :$year, Int:D :$month, Int:D :$day) {
+method BUILD(Int:D :$year, Int:D :$month, Int:D :$day, Int :$daypart = daylight()) {
   $._chek-build-args($year, $month, $day);
-  $._build-from-args($year, $month, $day);
+  $._build-from-args($year, $month, $day, $daypart);
 }
 
 method _chek-build-args(Int $year, Int $month, Int $day) {
@@ -37,16 +38,21 @@ method _chek-build-args(Int $year, Int $month, Int $day) {
   }
 }
 
-method _build-from-args(Int $year, Int $month, Int $day) {
-  $!year   = $year;
-  $!month  = $month;
-  $!day    = $day;
+method _build-from-args(Int $year, Int $month, Int $day, Int $daypart) {
+  $!year    = $year;
+  $!month   = $month;
+  $!day     = $day;
+  $!daypart = $daypart;
 
   # computing derived attributes
   my Int $jed        = ymdf-to-jed($year, $month, $day);
   my Int $daycount   = $jed - mjd-to-jed();
   my Int $doy        = $jed - ymdf-to-jed($year, 7, 1) + 1;
   my Int $dow        = ($daycount + 3) % 7 + 1;
+  if $daypart == after-sunset() {
+    # after computing $dow, not before!
+    --$daycount;
+  }
 
   # storing derived attributes
   $!day-of-year = $doy;
@@ -97,17 +103,20 @@ method is-leap {
 }
 
 method new-from-date($date) {
-  $.new-from-daycount($date.daycount);
+  $.new-from-daycount($date.daycount, daypart => $date.?daypart // daylight());
 }
 
-method new-from-daycount(Int $count) {
+method new-from-daycount(Int $count, Int :$daypart = daylight()) {
+  if $daypart == after-sunset() {
+    ++$count;
+  }
   my ($y, $m, $d) = jed-to-ymdf($count + mjd-to-jed());
-  $.new(year => $y, month => $m, day => $d);
+  $.new(year => $y, month => $m, day => $d, daypart => $daypart);
 }
 
 method to-date($class = 'Date') {
   # See "Learning Perl 6" page 177
-  my $d = ::($class).new-from-daycount($.daycount);
+  my $d = ::($class).new-from-daycount($.daycount, daypart => $.daypart);
   return $d;
 }
 
@@ -278,6 +287,26 @@ say $Perlcon-Riga-grg;
 
 =end code
 
+Hannukah  begins on  25 Kislev  at sunset.  What is  the corresponding
+Gregorian date?
+
+=begin code :lang<perl6>
+
+use Date::Calendar::Hebrew;
+use Date::Calendar::Strftime;
+my Date::Calendar::Hebrew $hannukah-heb;
+my Date                   $hannukah-grg;
+
+$hannukah-heb .= new(year    => 5785
+                   , month   =>    9
+                   , day     =>   25
+                   , daypart => after-sunset);
+$hannukah-grg = $hannukah-heb.to-date;
+
+say $hannukah-grg;
+
+=end code
+
 =head1 DESCRIPTION
 
 Date::Calendar::Hebrew  is a  class representing  dates in  the Hebrew
@@ -313,17 +342,20 @@ have the following:
 
 =head3 new
 
-Create an Hebrew date by giving the year, month and day numbers.
+Create an Hebrew date by giving  the year, month and day numbers, plus
+the day part (C<before-sunrise>, C<daylight> or C<after-sunset>).
 
 =head3 new-from-date
 
 Build an  Hebrew date by  cloning an  object from another  class. This
 other   class    can   be    the   core    class   C<Date>    or   any
-C<Date::Calendar::>R<xxx> class with a C<daycount> method.
+C<Date::Calendar::>R<xxx>  class   with  a  C<daycount>   method  and,
+hopefully, a C<daypart> method.
 
 =head3 new-from-daycount
 
-Build an Hebrew date from the Modified Julian Day number.
+Build  an Hebrew  date from  the Modified  Julian Day  number and  the
+C<daypart> value.
 
 =head2 Accessors
 
@@ -334,6 +366,16 @@ Gives a short string representing the date, in C<YYYY-MM-DD> format.
 =head3 year, month, day
 
 The numbers defining the date.
+
+=head3 daypart
+
+A  number indicating  which part  of the  day. This  number should  be
+filled   and   compared   with   the   following   subroutines,   with
+self-documenting names:
+
+=item before-sunrise
+=item daylight
+=item after-sunset
 
 =head3 month-name
 
@@ -514,7 +556,7 @@ The day of the year as a decimal number (range 001 to 385).
 
 =defn C<%L>
 
-Redundant with C<%Y> and strongly discouraged: the year number.
+Redundant with C<%Y> and deprecated: the year number.
 
 =defn C<%m>
 
@@ -524,6 +566,23 @@ leading zero if necessary.
 =defn C<%n>
 
 A newline character.
+
+=defn C<%Ep>
+
+Gives a 1-char string representing the day part:
+
+=item C<☾> or C<U+263E> before sunrise,
+=item C<☼> or C<U+263C> during daylight,
+=item C<☽> or C<U+263D> after sunset.
+
+Rationale: in  C or in  other programming languages,  when C<strftime>
+deals with a date-time object, the day is split into two parts, before
+noon and  after noon. The  C<%p> specifier  reflects this by  giving a
+C<"AM"> or C<"PM"> string.
+
+The  3-part   splitting  in   the  C<Date::Calendar::>R<xxx>   may  be
+considered as  an alternate  splitting of  a day.  To reflect  this in
+C<strftime>, we use an alternate version of C<%p>, therefore C<%Ep>.
 
 =defn C<%t>
 
@@ -545,7 +604,6 @@ The year as a decimal number.
 =defn C<%%>
 
 A literal `%' character.
-
 
 =head1 PROBLEMS AND KNOWN BUGS
 
@@ -630,11 +688,10 @@ Many  thanks to  all those  who were  involved in  Perl 6,  Rakudo and
 Rakudo-Star.
 
 Many thanks  to Andrew,  Laurent and C<brian>  for writing  books that
-helped me learn Perl 6.
+helped me learn Perl 6 / Raku.
 
 And some additional thanks  to Andrew, whose C<Date::Converter> module
 was the basis of the computations in this module.
-
 
 =head1 COPYRIGHT AND LICENSE
 

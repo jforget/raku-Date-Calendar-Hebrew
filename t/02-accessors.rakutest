@@ -4,11 +4,13 @@
 use v6.d;
 use Test;
 use Date::Calendar::Hebrew;
+use Date::Calendar::Strftime;
 
-plan  21;
+plan  25;
 
 my Date::Calendar::Hebrew $d .= new(year => 5779, month => 4, day => 19);
 
+# 1..7
 is($d.month,   4);
 is($d.day,    19);
 is($d.year, 5779);
@@ -18,32 +20,50 @@ is($d.month-name, 'Tamuz');
 is($d.day-name,   'Yom Sheni');
 
 # Adar on a regular year
+# 8..10
 $d .= new(year => 5778, month => 12, day => 19);
 is($d.gist      , '5778-12-19');
 is($d.month-name, 'Adar');
 is($d.month-abbr, 'Ada');
 
 # Adar on a leap year
+# 11..13
 $d .= new(year => 5779, month => 12, day => 19);
 is($d.gist      , '5779-12-19');
 is($d.month-name, 'Adar I');
 is($d.month-abbr, 'Ad1');
 
 $d .= new(year => 5779, month => 13, day => 19);
+# 14..16
 is($d.gist      , '5779-13-19');
 is($d.month-name, 'Adar II');
 is($d.month-abbr, 'Ad2');
 
 # Av month
+# 17..18
 $d .= new(year => 5780, month =>  5, day => 10);
 is($d.month-name, 'Av');
 is($d.month-abbr, 'Av '); # 3-char abbreviation for a 2-char month!
 
 # Elul
+# 19..21
 $d .= new(year => 5778, month =>  6, day => 29);
 is($d.day-of-year, 354);
 $d .= new(year => 5779, month =>  6, day => 29);
 is($d.day-of-year, 385);
 $d .= new(year => 5780, month =>  6, day => 29);
 is($d.day-of-year, 355);
+
+# Hannukah first day (25 Kislev, after sunset)
+# 22..25
+$d .= new(year => 5785, month =>  9, day => 24, daypart => daylight);
+is($d.daycount, 60669);
+$d .= new(year => 5785, month =>  9, day => 25, daypart => after-sunset);
+is($d.daycount, 60669);
+$d .= new(year => 5785, month =>  9, day => 25, daypart => before-sunrise);
+is($d.daycount, 60670);
+$d .= new(year => 5785, month =>  9, day => 25, daypart => daylight);
+is($d.daycount, 60670);
+
+
 done-testing;
