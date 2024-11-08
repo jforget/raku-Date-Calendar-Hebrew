@@ -1,5 +1,5 @@
 {
-  "api" : "0",
+  "api" : "1",
   "auth" : "zef:jforget",
   "authors" : [
     "Jean Forget"
@@ -12,10 +12,10 @@
   "description" : "Conversions from / to the Hebrew calendar",
   "license"     : "Artistic-2.0",
   "name"        : "Date::Calendar::Hebrew",
-  "perl"        : "6.c",
+  "perl"        : "6.d",
   "provides" : {
-      "Date::Calendar::Hebrew"        : "lib/Date/Calendar/Hebrew.pm6"
-    , "Date::Calendar::Hebrew::Names" : "lib/Date/Calendar/Hebrew/Names.pm6"
+      "Date::Calendar::Hebrew"        : "lib/Date/Calendar/Hebrew.rakumod"
+    , "Date::Calendar::Hebrew::Names" : "lib/Date/Calendar/Hebrew/Names.rakumod"
   },
   "resources"  : [ ],
   "source-url" : "https://github.com/jforget/raku-Date-Calendar-Hebrew.git",
@@ -29,5 +29,5 @@
   "test-depends" : [
       "Test::META"
   ],
-  "version" : "0.0.4"
+  "version" : "0.1.0"
 }

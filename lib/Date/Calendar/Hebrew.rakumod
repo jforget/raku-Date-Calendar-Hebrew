@@ -1,9 +1,9 @@
-use v6.c;
+use v6.d;
 use Date::Calendar::Strftime;
 use Date::Calendar::Hebrew::Names;
 use List::MoreUtils <before>;
 
-unit class Date::Calendar::Hebrew:ver<0.0.4>:auth<zef:jforget>:api<0>
+unit class Date::Calendar::Hebrew:ver<0.1.0>:auth<zef:jforget>:api<1>
       does Date::Calendar::Strftime;
 
 has Int $.year  where { $_ ≥ 1 };
