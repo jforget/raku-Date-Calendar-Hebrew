@@ -322,9 +322,13 @@ months, so  while the duration  of the Hebrew year  oscillates between
 tropic year.
 
 The switch from  a date to the  next occurs at sunset.  This point has
-not been implemented in this module, conversions are valid only before
-sunset. So,  while 16th June 2019  at noon converts to  13 Sivan 5779,
-16th June 2019 at 23:59 really is 14 Sivan 5779.
+been implemented in this module, by adding a C<daypart> parameter. So,
+while 16th June  2019 during daylight converts to 13  Sivan 5779, 16th
+June 2019 after sunset converts to 14 Sivan 5779.
+
+Note: in  the direction Gregorian →  Hebrew, this requires the  use of
+C<Date::Calendar::Gregorian:api<1>>, the core  module C<Date> does not
+work.
 
 A peculiar characteristic  of this calendar is that the  switch from a
 year to the next occurs when switching  from month 6 to month 7. So we
@@ -387,7 +391,7 @@ The month of the  date, as a 3-char string.
 
 This is  always a 3-char  string, even for  month "Av". The  reason is
 that the  abbreviations are often used  in tables and arrays  so that,
-when typescripted  with a constant-width  font, it keeps  the vertical
+when  typeset  with  a  constant-width font,  it  keeps  the  vertical
 alignment of the table elements. Therefore, the abbreviation is 3-char
 for all months.
 
@@ -607,10 +611,6 @@ A literal `%' character.
 
 =head1 PROBLEMS AND KNOWN BUGS
 
-The  conversions are  valid before  sunset. It  is up  to the  user to
-assert the  need of incrementing  the Hebrew date or  decrementing the
-Gregorian date if the time of day is in the evening after sunset.
-
 I have found  no source for day abbreviations, so  only the months are
 abbreviated.
 
@@ -665,7 +665,7 @@ L<DateTime::Event::Jewish::Sunrise>
 
 date(1), strftime(3)
 
-F<calendar/cal-hebrew.el>  in emacs.2  or xemacs.
+C<calendar/cal-hebrew.el>  in emacs.2  or xemacs.
 
 CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>
