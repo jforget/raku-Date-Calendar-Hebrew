@@ -74,21 +74,21 @@ L<https://api.kde.org/4.x-api/kdelibs-apidocs/kdecore/html/kcalendarsystemhebrew
 
 =head2 Perl 5 Software
 
-L<DateTime>
+L<DateTime|https://metacpan.org/pod/DateTime>
 
-L<DateTime::Calendar::Hebrew>
+L<DateTime::Calendar::Hebrew|https://metacpan.org/pod/DateTime::Calendar::Hebrew>
 
-L<Date::Convert>
+L<Date::Convert|https://metacpan.org/pod/Date::Convert>
 
-L<Date::Hebrew::Simple>
+L<Date::Hebrew::Simple|https://metacpan.org/pod/Date::Hebrew::Simple>
 
-L<Date::Converter>
+L<Date::Converter|https://metacpan.org/pod/Date::Converter> which I used as a model for the computations in this module.
 
 =head2 Other Software
 
 date(1), strftime(3)
 
-F<calendar/cal-hebrew.el>  in emacs.2  or xemacs.
+C<calendar/cal-hebrew.el>  in emacs.2  or xemacs.
 
 CALENDRICA 4.0 -- Common Lisp, which can be download in the "Resources" section of
 L<https://www.cambridge.org/us/academic/subjects/computer-science/computing-general-interest/calendrical-calculations-ultimate-edition-4th-edition?format=PB&isbn=9781107683167>

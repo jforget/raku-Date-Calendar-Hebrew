@@ -14,7 +14,7 @@ grep -r --exclude-dir='.git' --exclude-dir='.precomp' -P '\t' *
 echo -------------------
 echo end-of-line spaces
 echo -------------------
-grep -r --exclude-dir='.git' --exclude-dir='.precomp' -P ' $' *
+grep -r --exclude-dir='.git' --exclude-dir='.precomp' --exclude-dir='doc' -P ' $' *
 
 echo -------------------
 echo version 6.c vs 6.d
@@ -24,9 +24,9 @@ grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' -P '6\.
 echo -------------------
 echo module version and api
 echo -------------------
-grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' -P '\b(ver|api)\b' *
+grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' --exclude-dir='doc' -P '\b(ver|api)\b' *
 
 echo -------------------
 echo copyright 202x
 echo -------------------
-grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' -i -P '\bcopyright\b' *|grep 202
+grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' --exclude-dir='doc' -i -P '\bcopyright\b' *|grep 202
