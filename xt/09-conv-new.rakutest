@@ -1,0 +1,68 @@
+#
+# Checking the conversions with newer 0.1.x modules
+#
+
+use v6.d;
+use Test;
+use lib '../version-new/lib';
+use lib 'lib';
+use Date::Calendar::Strftime;
+use Date::Calendar::Hebrew;
+use Date::Calendar::Gregorian;
+
+my @data  = ( (5785,  8, 11, daylight,       'gr', "Tue 12 Nov 2024 ☼", "Yom Shlishi 11 Hes 5785 ☼")
+            , (5785,  8, 12, after-sunset,   'gr', "Tue 12 Nov 2024 ☽", "Yom Reviʻi 12 Hes 5785 ☽" )
+            , (5785,  8, 12, before-sunrise, 'gr', "Wed 13 Nov 2024 ☾", "Yom Reviʻi 12 Hes 5785 ☾" )
+            , (5785,  8, 12, daylight,       'gr', "Wed 13 Nov 2024 ☼", "Yom Reviʻi 12 Hes 5785 ☼" )
+            , (5785,  8, 13, after-sunset,   'gr', "Wed 13 Nov 2024 ☽", "Yom Chamishi 13 Hes 5785 ☽")
+            );
+
+my @data2 = ( (5785,  8, 12, daylight,       'jl', "Wed 31 Oct 2024 ☼", "Yom Reviʻi 12 Hes 5785 ☼")
+            , (5785,  8, 13, after-sunset,   'jl', "Wed 31 Oct 2024 ☽", "Yom Reviʻi 12 Hes 5785 ☼")
+            , (5785,  8, 13, before-sunrise, 'jl', "Thu 01 Nov 2024 ☾", "Yom Chamishi 13 Hes 5785 ☼")
+            );
+
+my %class =   gr => 'Date::Calendar::Gregorian'
+            , he => 'Date::Calendar::Hebrew'
+            , jl => 'Date::Calendar::Julian'
+            ;
+
+my %ver   =   gr => '0.1.0'
+            , he => '0.1.0'
+            , jl => '0.1.0'
+            ;
+
+plan 12 × @data.elems;
+
+for (@data) -> $datum {
+  my ($year, $month, $day, $daypart, $cal, $str2, $str3) = $datum;
+  my Date::Calendar::Hebrew $d1 .= new(year => $year, month => $month, day => $day, daypart => $daypart);
+
+  # push-push
+  my $d2 = $d1.to-date(%class{$cal});
+  is($d2.strftime("%a %d %b %Y %Ep"), $str2, "testing push with $str2");
+  is($d2.^ver, %ver{$cal});
+  my $d3 = $d2.to-date(%class<he>);
+  is($d3.strftime("%A %d %b %Y %Ep"), $str3, "testing push-push with $str2 and $str3");
+  is($d3.^ver, %ver<he>);
+
+  # push-pull
+  my Date::Calendar::Hebrew $d4 .= new-from-date($d2);
+  is($d4.strftime("%A %d %b %Y %Ep"), $str3, "testing push-pull with $str2 and $str3");
+  is($d4.^ver, %ver<he>);
+
+  # pull-push
+  my $d5 = ::(%class{$cal}).new-from-date($d1);
+  is($d5.strftime("%a %d %b %Y %Ep"), $str2, "testing pull with $str2");
+  is($d5.^ver, %ver{$cal});
+  my $d6 = $d5.to-date(%class<he>);
+  is($d6.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-push with $str2 and $str3");
+  is($d6.^ver, %ver<he>);
+
+  # pull-pull
+  my Date::Calendar::Hebrew $d7 .= new-from-date($d5);
+  is($d7.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-pull with $str2 and $str3");
+  is($d7.^ver, %ver<he>);
+}
+
+done-testing;

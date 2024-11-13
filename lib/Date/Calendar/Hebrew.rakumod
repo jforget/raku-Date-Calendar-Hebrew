@@ -106,7 +106,7 @@ method new-from-date($date) {
   $.new-from-daycount($date.daycount, daypart => $date.?daypart // daylight());
 }
 
-method new-from-daycount(Int $count, Int :$daypart = daylight()) {
+method new-from-daycount(Int $count is copy, Int :$daypart = daylight()) {
   if $daypart == after-sunset() {
     ++$count;
   }
