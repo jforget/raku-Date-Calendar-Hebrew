@@ -4,7 +4,6 @@
 # Building the test directories for the tests of date conversions
 #
 
-. ./init-env
 export OLD=$BASE/version-old
 export NEW=$BASE/version-new
 

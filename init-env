@@ -1,9 +1,10 @@
 #!/bin/sh
 # -*- encoding: utf-8; indent-tabs-mode: nil -*-
 #
-# Initializing the shell variables with directory names
+# Initializing some shell variables with directory names
 #
 
 
 export BASE=$HOME/Documents/prog/rakudo/modules
-export THIS_DIR=$BASE/raku-Date-Calendar-Hebrew
+export THIS_DIR=$PWD
+export PATH=$PATH:$THIS_DIR/util
