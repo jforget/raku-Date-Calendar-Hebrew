@@ -11,16 +11,16 @@ use Date::Calendar::Hebrew;
 use Date::Calendar::Gregorian;
 use Date::Calendar::Julian;
 
-my @data1 = ( (5785,  8, 11, daylight,       'gr', "Tue 12 Nov 2024", "Yom Shlishi 11 Hes 5785 ☼", '2024-11-12')
-            , (5785,  8, 12, after-sunset,   'gr', "Tue 12 Nov 2024", "Yom Shlishi 11 Hes 5785 ☼", '2024-11-12')
-            , (5785,  8, 12, before-sunrise, 'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13')
-            , (5785,  8, 12, daylight,       'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13')
-            , (5785,  8, 13, after-sunset,   'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13')
+my @data1 = ( (5785,  8, 11, daylight,       'gr', "Tue 12 Nov 2024", "Yom Shlishi 11 Hes 5785 ☼", '2024-11-12', "no problem")
+            , (5785,  8, 12, after-sunset,   'gr', "Tue 12 Nov 2024", "Yom Shlishi 11 Hes 5785 ☼", '2024-11-12', "shift to previous day")
+            , (5785,  8, 12, before-sunrise, 'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13', "shift to daylight")
+            , (5785,  8, 12, daylight,       'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13', "no problem")
+            , (5785,  8, 13, after-sunset,   'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13', "shift to previous day")
             );
 
-my @data2 = ( (5785,  8, 12, daylight,       'jl', "Wed 31 Oct 2024", "Yom Reviʻi 12 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'jl', "Wed 31 Oct 2024", "Yom Reviʻi 12 Hes 5785 ☼")
-            , (5785,  8, 13, before-sunrise, 'jl', "Thu 01 Nov 2024", "Yom Chamishi 13 Hes 5785 ☼")
+my @data2 = ( (5785,  8, 12, daylight,       'jl', "Wed 31 Oct 2024", "Yom Reviʻi 12 Hes 5785 ☼"  , "no problem")
+            , (5785,  8, 13, after-sunset,   'jl', "Wed 31 Oct 2024", "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785,  8, 13, before-sunrise, 'jl', "Thu 01 Nov 2024", "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
             );
 
 my %class =   gr => 'Date::Calendar::Gregorian'
@@ -36,45 +36,45 @@ my %ver   =   gr => '0.0.2'
 plan 15 × @data1.elems + 12 × @data2.elems;
 
 for (|@data1, |@data2) -> $datum {
-  my ($year, $month, $day, $daypart, $cal, $str2, $str3) = $datum;
+  my ($year, $month, $day, $daypart, $cal, $str2, $str3, $result) = $datum;
   my Date::Calendar::Hebrew $d1 .= new(year => $year, month => $month, day => $day, daypart => $daypart);
 
   # push-push
   my $d2 = $d1.to-date(%class{$cal});
-  is($d2.strftime("%a %d %b %Y"), $str2);
+  is($d2.strftime("%a %d %b %Y"), $str2, "testing push to $str2");
   is($d2.^ver, %ver{$cal});
   my $d3 = $d2.to-date(%class<he>);
-  is($d3.strftime("%A %d %b %Y %Ep"), $str3);
+  is($d3.strftime("%A %d %b %Y %Ep"), $str3, "testing push-push to $str2 and $str3, $result");
   is($d3.^ver, %ver<he>);
 
   # push-pull
   my Date::Calendar::Hebrew $d4 .= new-from-date($d2);
-  is($d4.strftime("%A %d %b %Y %Ep"), $str3);
+  is($d4.strftime("%A %d %b %Y %Ep"), $str3, "testing push-pull to $str2 and $str3, $result");
   is($d4.^ver, %ver<he>);
 
   # pull-push
   my $d5 = ::(%class{$cal}).new-from-date($d1);
-  is($d5.strftime("%a %d %b %Y"), $str2);
+  is($d5.strftime("%a %d %b %Y"), $str2, "testing pull to $str2");
   is($d5.^ver, %ver{$cal});
   my $d6 = $d5.to-date(%class<he>);
-  is($d6.strftime("%A %d %b %Y %Ep"), $str3);
+  is($d6.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-push to $str2 and $str3, $result");
   is($d6.^ver, %ver<he>);
 
   # pull-pull
   my Date::Calendar::Hebrew $d7 .= new-from-date($d5);
-  is($d7.strftime("%A %d %b %Y %Ep"), $str3);
+  is($d7.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-pull to $str2 and $str3, $result");
   is($d7.^ver, %ver<he>);
 }
 
 # Conversion with core class Date: only push-pull tests
 for (@data1) -> $datum {
-  my ($year, $month, $day, $daypart, $cal, $str2, $str3, $str4) = $datum;
+  my ($year, $month, $day, $daypart, $cal, $str2, $str3, $str4, $result) = $datum;
   my Date::Calendar::Hebrew $d1 .= new(year => $year, month => $month, day => $day, daypart => $daypart);
 
   my $d2 = $d1.to-date('Date');
-  is($d2.gist, $str4);
+  is($d2.gist, $str4, "testing push from $year-$month-$day to $str4");
   my Date::Calendar::Hebrew $d3 .= new-from-date($d2);
-  is($d3.strftime("%A %d %b %Y %Ep"), $str3);
+  is($d3.strftime("%A %d %b %Y %Ep"), $str3, "testing push-pull from $year-$month-$day to $str4 and then $str3, $result");
   is($d3.^ver, %ver<he>);
 }
 

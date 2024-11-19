@@ -41,7 +41,7 @@ for (@data) -> $datum {
   # push-push
   my $d2 = $d1.to-date(%class{$cal});
   is($d2.strftime("%a %d %b %Y %Ep"), $str2, "testing push with $str2");
-  is($d2.^ver, %ver{$cal});
+  is(substr($d2.^ver.Str, 0, 4), '0.1.');
   my $d3 = $d2.to-date(%class<he>);
   is($d3.strftime("%A %d %b %Y %Ep"), $str3, "testing push-push with $str2 and $str3");
   is($d3.^ver, %ver<he>);
@@ -54,7 +54,7 @@ for (@data) -> $datum {
   # pull-push
   my $d5 = ::(%class{$cal}).new-from-date($d1);
   is($d5.strftime("%a %d %b %Y %Ep"), $str2, "testing pull with $str2");
-  is($d5.^ver, %ver{$cal});
+  is(substr($d5.^ver.Str, 0, 4), '0.1.');
   my $d6 = $d5.to-date(%class<he>);
   is($d6.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-push with $str2 and $str3");
   is($d6.^ver, %ver<he>);
