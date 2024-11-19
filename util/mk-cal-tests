@@ -46,16 +46,19 @@ cpmod () {
   raku -e "$MERGE" META6.json $NEW/META6.json
 }
 
+# .pm6 modules
 cpmod raku-Date-Calendar-Gregorian           v0.0.2
 cpmod raku-Date-Calendar-Julian              v0.0.4
 cpmod raku-Date-Calendar-Hebrew              v0.0.4
-cpmod raku-Date-Calendar-Hijri               v0.0.2
 cpmod raku-Date-Calendar-CopticEthiopic      v0.0.3
-cpmod raku-Date-Calendar-Persian             v0.0.2
-cpmod raku-Date-Calendar-Bahai               v0.0.2
 cpmod raku-Date-Calendar-MayaAztec           v0.0.3
 cpmod raku-Date-Calendar-FrenchRevolutionary v0.0.6
 cd $OLD
 rm $(find . -name '*.rakumod')
+
+# .rakumod modules
+cpmod raku-Date-Calendar-Bahai               v0.0.2
+cpmod raku-Date-Calendar-Hijri               v0.0.2
+cpmod raku-Date-Calendar-Persian             v0.0.2
 
 exit
