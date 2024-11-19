@@ -7,30 +7,98 @@ use Test;
 use lib '../version-old/lib';
 use lib 'lib';
 use Date::Calendar::Strftime:ver<0.1.0>;
+use Date::Calendar::Bahai;
+use Date::Calendar::Bahai::Astronomical;
+use Date::Calendar::Coptic;
+use Date::Calendar::Ethiopic;
 use Date::Calendar::Hebrew;
+use Date::Calendar::Hijri;
 use Date::Calendar::Gregorian;
+use Date::Calendar::FrenchRevolutionary;
+use Date::Calendar::FrenchRevolutionary::Arithmetic;
+use Date::Calendar::FrenchRevolutionary::Astronomical;
 use Date::Calendar::Julian;
+use Date::Calendar::Julian::AUC;
+use Date::Calendar::Persian;
+use Date::Calendar::Persian::Astronomical;
 
-my @data1 = ( (5785,  8, 11, daylight,       'gr', "Tue 12 Nov 2024", "Yom Shlishi 11 Hes 5785 ☼", '2024-11-12', "no problem")
-            , (5785,  8, 12, after-sunset,   'gr', "Tue 12 Nov 2024", "Yom Shlishi 11 Hes 5785 ☼", '2024-11-12', "shift to previous day")
-            , (5785,  8, 12, before-sunrise, 'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13', "shift to daylight")
-            , (5785,  8, 12, daylight,       'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13', "no problem")
-            , (5785,  8, 13, after-sunset,   'gr', "Wed 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼" , '2024-11-13', "shift to previous day")
+my @data1 = ( (5785,  8, 11, daylight,       'gr', "Tuesday 12 Nov 2024"  , "Yom Shlishi 11 Hes 5785 ☼" , '2024-11-12', "no problem")
+            , (5785,  8, 12, after-sunset,   'gr', "Tuesday 12 Nov 2024"  , "Yom Shlishi 11 Hes 5785 ☼" , '2024-11-12', "shift to previous day")
+            , (5785,  8, 12, before-sunrise, 'gr', "Wednesday 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼"  , '2024-11-13', "shift to daylight")
+            , (5785,  8, 12, daylight,       'gr', "Wednesday 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼"  , '2024-11-13', "no problem")
+            , (5785,  8, 13, after-sunset,   'gr', "Wednesday 13 Nov 2024", "Yom Reviʻi 12 Hes 5785 ☼"  , '2024-11-13', "shift to previous day")
+            , (5785,  8, 13, before-sunrise, 'gr', "Thursday 14 Nov 2024" , "Yom Chamishi 13 Hes 5785 ☼", '2024-11-14', "shift to daylight")
+            , (5785,  8, 13, daylight,       'gr', "Thursday 14 Nov 2024" , "Yom Chamishi 13 Hes 5785 ☼", '2024-11-14', "no problem")
             );
 
-my @data2 = ( (5785,  8, 12, daylight,       'jl', "Wed 31 Oct 2024", "Yom Reviʻi 12 Hes 5785 ☼"  , "no problem")
-            , (5785,  8, 13, after-sunset,   'jl', "Wed 31 Oct 2024", "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
-            , (5785,  8, 13, before-sunrise, 'jl', "Thu 01 Nov 2024", "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+my @data2 = ( (5785, 8, 13, after-sunset,   'ba', "ʻIdál 10 Qud 0181"          , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'ba', "Istijlál 11 Qud 0181"       , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'ba', "Istijlál 11 Qud 0181"       , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'be', "ʻIdál 11 Qud 0181"          , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'be', "Istijlál 12 Qud 0181"       , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'be', "Istijlál 12 Qud 0181"       , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'co', "Peftoou 04 Hat 1741"        , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'co', "Ptiou 05 Hat 1741"          , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'co', "Ptiou 05 Hat 1741"          , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'et', "Hamus 04 Hed 2017"          , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'et', "Arb 05 Hed 2017"            , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'et', "Arb 05 Hed 2017"            , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'fr', "Tridi 23 Bru 0233"          , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'fr', "Quartidi 24 Bru 0233"       , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'fr', "Quartidi 24 Bru 0233"       , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'fa', "Tridi 23 Bru 0233"          , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'fa', "Quartidi 24 Bru 0233"       , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'fa', "Quartidi 24 Bru 0233"       , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'fe', "Tridi 23 Bru 0233"          , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'fe', "Quartidi 24 Bru 0233"       , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'fe', "Quartidi 24 Bru 0233"       , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'hi', "Yaum al-Arbi'a 11 J.A 1446" , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'hi', "Yaum al-Khamees 12 J.A 1446", "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'hi', "Yaum al-Khamees 12 J.A 1446", "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'jl', "Wednesday 31 Oct 2024"      , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'jl', "Thursday 01 Nov 2024"       , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'jl', "Thursday 01 Nov 2024"       , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'jc', "Wednesday 31 Oct 2777"      , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'jc', "Thursday 01 Nov 2777"       , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'jc', "Thursday 01 Nov 2777"       , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'pe', "Chahar shanbe 23 Aba 1403"  , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'pe', "Panj shanbe 24 Aba 1403"    , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'pe', "Panj shanbe 24 Aba 1403"    , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
+            , (5785, 8, 13, after-sunset,   'pa', "Chahar shanbe 23 Aba 1403"  , "Yom Reviʻi 12 Hes 5785 ☼"  , "shift to previous day")
+            , (5785, 8, 13, before-sunrise, 'pa', "Panj shanbe 24 Aba 1403"    , "Yom Chamishi 13 Hes 5785 ☼", "shift to daylight")
+            , (5785, 8, 13, daylight,       'pa', "Panj shanbe 24 Aba 1403"    , "Yom Chamishi 13 Hes 5785 ☼", "no problem")
             );
 
-my %class =   gr => 'Date::Calendar::Gregorian'
+my %class =   ba => 'Date::Calendar::Bahai'
+            , be => 'Date::Calendar::Bahai::Astronomical'
+            , gr => 'Date::Calendar::Gregorian'
+            , co => 'Date::Calendar::Coptic'
+            , et => 'Date::Calendar::Ethiopic'
+            , fr => 'Date::Calendar::FrenchRevolutionary'
+            , fa => 'Date::Calendar::FrenchRevolutionary::Arithmetic'
+            , fe => 'Date::Calendar::FrenchRevolutionary::Astronomical'
             , he => 'Date::Calendar::Hebrew'
+            , hi => 'Date::Calendar::Hijri'
             , jl => 'Date::Calendar::Julian'
+            , jc => 'Date::Calendar::Julian::AUC'
+            , pe => 'Date::Calendar::Persian'
+            , pa => 'Date::Calendar::Persian::Astronomical'
             ;
 
-my %ver   =   gr => '0.0.2'
+my %ver   =   ba => '0.0.2'
+            , be => '0.0.2'
+            , co => '0.0.3'
+            , et => '0.0.3'
+            , fr => '0.0.6'
+            , fa => '0.0.6'
+            , fe => '0.0.6'
+            , gr => '0.0.2'
             , he => '0.1.0'
+            , hi => '0.0.2'
             , jl => '0.0.4'
+            , jc => '0.0.4'
+            , pe => '0.0.2'
+            , pa => '0.0.2'
             ;
 
 plan 15 × @data1.elems + 12 × @data2.elems;
@@ -41,7 +109,7 @@ for (|@data1, |@data2) -> $datum {
 
   # push-push
   my $d2 = $d1.to-date(%class{$cal});
-  is($d2.strftime("%a %d %b %Y"), $str2, "testing push to $str2");
+  is($d2.strftime("%A %d %b %Y"), $str2, "testing push to $str2");
   is($d2.^ver, %ver{$cal});
   my $d3 = $d2.to-date(%class<he>);
   is($d3.strftime("%A %d %b %Y %Ep"), $str3, "testing push-push to $str2 and $str3, $result");
@@ -54,7 +122,7 @@ for (|@data1, |@data2) -> $datum {
 
   # pull-push
   my $d5 = ::(%class{$cal}).new-from-date($d1);
-  is($d5.strftime("%a %d %b %Y"), $str2, "testing pull to $str2");
+  is($d5.strftime("%A %d %b %Y"), $str2, "testing pull to $str2");
   is($d5.^ver, %ver{$cal});
   my $d6 = $d5.to-date(%class<he>);
   is($d6.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-push to $str2 and $str3, $result");
