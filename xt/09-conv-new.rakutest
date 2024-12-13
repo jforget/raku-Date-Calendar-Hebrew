@@ -7,6 +7,8 @@ use Test;
 use lib '../version-new/lib';
 use lib 'lib';
 use Date::Calendar::Strftime:ver<0.1.0>;
+use Date::Calendar::Aztec;
+use Date::Calendar::Aztec::Cortes;
 use Date::Calendar::Bahai;
 use Date::Calendar::Bahai::Astronomical;
 use Date::Calendar::Coptic;
@@ -19,59 +21,79 @@ use Date::Calendar::FrenchRevolutionary::Arithmetic;
 use Date::Calendar::FrenchRevolutionary::Astronomical;
 use Date::Calendar::Julian;
 use Date::Calendar::Julian::AUC;
+use Date::Calendar::Maya;
+use Date::Calendar::Maya::Astronomical;
+use Date::Calendar::Maya::Spinden;
 use Date::Calendar::Persian;
 use Date::Calendar::Persian::Astronomical;
 
 my $ver-he = '0.1.0';
-my @data  = ( (5785,  8, 11, daylight,       'gr', "Tuesday 12 Nov 2024 ☼"        , "Yom Shlishi 11 Hes 5785 ☼")
-            , (5785,  8, 12, after-sunset,   'gr', "Tuesday 12 Nov 2024 ☽"        , "Yom Reviʻi 12 Hes 5785 ☽" )
-            , (5785,  8, 12, before-sunrise, 'gr', "Wednesday 13 Nov 2024 ☾"      , "Yom Reviʻi 12 Hes 5785 ☾" )
-            , (5785,  8, 12, daylight,       'gr', "Wednesday 13 Nov 2024 ☼"      , "Yom Reviʻi 12 Hes 5785 ☼" )
-            , (5785,  8, 13, after-sunset,   'gr', "Wednesday 13 Nov 2024 ☽"      , "Yom Chamishi 13 Hes 5785 ☽")
+my @data  = (
+       (5785,  9, 14, after-sunset,   'ba', "Jamál 04 Mal 0181 ☽"         , "Yom Rishon 14 Kis 5785 ☽"     , "Gregorian: 2024-12-14")
+     , (5785,  9, 14, before-sunrise, 'ba', "Jamál 04 Mal 0181 ☾"         , "Yom Rishon 14 Kis 5785 ☾"     , "Gregorian: 2024-12-15")
+     , (5785,  9, 14, daylight,       'ba', "Jamál 04 Mal 0181 ☼"         , "Yom Rishon 14 Kis 5785 ☼"     , "Gregorian: 2024-12-15")
+     , (5785,  8, 21, after-sunset,   'be', "Istiqlál 01 Qaw 0181 ☽"      , "Yom Shishi 21 Hes 5785 ☽"     , "Gregorian: 2024-11-21")
+     , (5785,  8, 21, before-sunrise, 'be', "Istiqlál 01 Qaw 0181 ☾"      , "Yom Shishi 21 Hes 5785 ☾"     , "Gregorian: 2024-11-22")
+     , (5785,  8, 21, daylight,       'be', "Istiqlál 01 Qaw 0181 ☼"      , "Yom Shishi 21 Hes 5785 ☼"     , "Gregorian: 2024-11-22")
+     , (5785,  5, 11, after-sunset,   'co', "Pshoment 29 Epe 1741 ☽"      , "Yom Shlishi 11 Av  5785 ☽"    , "Gregorian: 2025-08-04")
+     , (5785,  5, 11, before-sunrise, 'co', "Pshoment 29 Epe 1741 ☾"      , "Yom Shlishi 11 Av  5785 ☾"    , "Gregorian: 2025-08-05")
+     , (5785,  5, 11, daylight,       'co', "Pshoment 29 Epe 1741 ☼"      , "Yom Shlishi 11 Av  5785 ☼"    , "Gregorian: 2025-08-05")
+     , (5785, 10, 14, after-sunset,   'et', "Rob 06 Ter 2017 ☽"           , "Yom Shlishi 14 Tev 5785 ☽"    , "Gregorian: 2025-01-13")
+     , (5785, 10, 14, before-sunrise, 'et', "Rob 06 Ter 2017 ☾"           , "Yom Shlishi 14 Tev 5785 ☾"    , "Gregorian: 2025-01-14")
+     , (5785, 10, 14, daylight,       'et', "Rob 06 Ter 2017 ☼"           , "Yom Shlishi 14 Tev 5785 ☼"    , "Gregorian: 2025-01-14")
+     , (5783,  1,  2, after-sunset,   'fr', "Tridi 03 Ger 0231 ☽"         , "Yom Shishi 02 Nis 5783 ☽"     , "Gregorian: 2023-03-23")
+     , (5783,  1,  2, before-sunrise, 'fr', "Quartidi 04 Ger 0231 ☾"      , "Yom Shishi 02 Nis 5783 ☾"     , "Gregorian: 2023-03-24")
+     , (5783,  1,  2, daylight,       'fr', "Quartidi 04 Ger 0231 ☼"      , "Yom Shishi 02 Nis 5783 ☼"     , "Gregorian: 2023-03-24")
+     , (5785, 12, 27, after-sunset,   'fa', "Sextidi 06 Ger 0233 ☽"       , "Yom Chamishi 27 Ada 5785 ☽"   , "Gregorian: 2025-03-26")
+     , (5785, 12, 27, before-sunrise, 'fa', "Septidi 07 Ger 0233 ☾"       , "Yom Chamishi 27 Ada 5785 ☾"   , "Gregorian: 2025-03-27")
+     , (5785, 12, 27, daylight,       'fa', "Septidi 07 Ger 0233 ☼"       , "Yom Chamishi 27 Ada 5785 ☼"   , "Gregorian: 2025-03-27")
+     , (5782,  5, 28, after-sunset,   'fe', "Septidi 07 Fru 0230 ☽"       , "Yom Chamishi 28 Av  5782 ☽"   , "Gregorian: 2022-08-24")
+     , (5782,  5, 28, before-sunrise, 'fe', "Octidi 08 Fru 0230 ☾"        , "Yom Chamishi 28 Av  5782 ☾"   , "Gregorian: 2022-08-25")
+     , (5782,  5, 28, daylight,       'fe', "Octidi 08 Fru 0230 ☼"        , "Yom Chamishi 28 Av  5782 ☼"   , "Gregorian: 2022-08-25")
+     , (5785,  8, 13, after-sunset,   'gr', "Wednesday 13 Nov 2024 ☽"     , "Yom Chamishi 13 Hes 5785 ☽"   , "Gregorian: 2024-11-13")
+     , (5785,  8, 13, before-sunrise, 'gr', "Thursday 14 Nov 2024 ☾"      , "Yom Chamishi 13 Hes 5785 ☾"   , "Gregorian: 2024-11-14")
+     , (5785,  8, 13, daylight,       'gr', "Thursday 14 Nov 2024 ☼"      , "Yom Chamishi 13 Hes 5785 ☼"   , "Gregorian: 2024-11-14")
+     , (5783,  4, 13, after-sunset,   'he', "Yom Rishon 13 Tam 5783 ☽"    , "Yom Rishon 13 Tam 5783 ☽"     , "Gregorian: 2023-07-01")
+     , (5783,  4, 13, before-sunrise, 'he', "Yom Rishon 13 Tam 5783 ☾"    , "Yom Rishon 13 Tam 5783 ☾"     , "Gregorian: 2023-07-02")
+     , (5783,  4, 13, daylight,       'he', "Yom Rishon 13 Tam 5783 ☼"    , "Yom Rishon 13 Tam 5783 ☼"     , "Gregorian: 2023-07-02")
+     , (5783, 10, 11, after-sunset,   'hi', "Yaum al-Arbi'a 11 J.T 1444 ☽", "Yom Reviʻi 11 Tev 5783 ☽"     , "Gregorian: 2023-01-03")
+     , (5783, 10, 11, before-sunrise, 'hi', "Yaum al-Arbi'a 11 J.T 1444 ☾", "Yom Reviʻi 11 Tev 5783 ☾"     , "Gregorian: 2023-01-04")
+     , (5783, 10, 11, daylight,       'hi', "Yaum al-Arbi'a 11 J.T 1444 ☼", "Yom Reviʻi 11 Tev 5783 ☼"     , "Gregorian: 2023-01-04")
+     , (5784,  5, 10, after-sunset,   'jl', "Tuesday 31 Jul 2024 ☽"       , "Yom Reviʻi 10 Av  5784 ☽"     , "Gregorian: 2024-08-13")
+     , (5784,  5, 10, before-sunrise, 'jl', "Wednesday 01 Aug 2024 ☾"     , "Yom Reviʻi 10 Av  5784 ☾"     , "Gregorian: 2024-08-14")
+     , (5784,  5, 10, daylight,       'jl', "Wednesday 01 Aug 2024 ☼"     , "Yom Reviʻi 10 Av  5784 ☼"     , "Gregorian: 2024-08-14")
+     , (5785, 11, 28, after-sunset,   'jc', "Tuesday 12 Feb 2778 ☽"       , "Yom Reviʻi 28 Shv 5785 ☽"     , "Gregorian: 2025-02-25")
+     , (5785, 11, 28, before-sunrise, 'jc', "Wednesday 13 Feb 2778 ☾"     , "Yom Reviʻi 28 Shv 5785 ☾"     , "Gregorian: 2025-02-26")
+     , (5785, 11, 28, daylight,       'jc', "Wednesday 13 Feb 2778 ☼"     , "Yom Reviʻi 28 Shv 5785 ☼"     , "Gregorian: 2025-02-26")
+     , (5783,  6,  8, after-sunset,   'pe', "Panj shanbe 02 Sha 1402 ☽"   , "Yom Shishi 08 Elu 5783 ☽"     , "Gregorian: 2023-08-24")
+     , (5783,  6,  8, before-sunrise, 'pe', "Jumee 03 Sha 1402 ☾"         , "Yom Shishi 08 Elu 5783 ☾"     , "Gregorian: 2023-08-25")
+     , (5783,  6,  8, daylight,       'pe', "Jumee 03 Sha 1402 ☼"         , "Yom Shishi 08 Elu 5783 ☼"     , "Gregorian: 2023-08-25")
+     , (5785,  7,  5, after-sunset,   'pa', "Yek-shanbe 15 Meh 1403 ☽"    , "Yom Sheni 05 Tis 5785 ☽"      , "Gregorian: 2024-10-06")
+     , (5785,  7,  5, before-sunrise, 'pa', "Do shanbe 16 Meh 1403 ☾"     , "Yom Sheni 05 Tis 5785 ☾"      , "Gregorian: 2024-10-07")
+     , (5785,  7,  5, daylight,       'pa', "Do shanbe 16 Meh 1403 ☼"     , "Yom Sheni 05 Tis 5785 ☼"      , "Gregorian: 2024-10-07")
             );
 
-my @data2 = ( (5785,  8, 13, after-sunset,   'ba', "Istijlál 11 Qud 0181 ☽"       , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'ba', "Istijlál 11 Qud 0181 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'ba', "Istijlál 11 Qud 0181 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'be', "Istijlál 12 Qud 0181 ☽"       , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'be', "Istijlál 12 Qud 0181 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'be', "Istijlál 12 Qud 0181 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'co', "Ptiou 05 Hat 1741 ☽"          , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'co', "Ptiou 05 Hat 1741 ☾"          , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'co', "Ptiou 05 Hat 1741 ☼"          , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'et', "Arb 05 Hed 2017 ☽"            , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'et', "Arb 05 Hed 2017 ☾"            , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'et', "Arb 05 Hed 2017 ☼"            , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'fr', "Tridi 23 Bru 0233 ☽"          , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'fr', "Quartidi 24 Bru 0233 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'fr', "Quartidi 24 Bru 0233 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'fa', "Tridi 23 Bru 0233 ☽"          , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'fa', "Quartidi 24 Bru 0233 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'fa', "Quartidi 24 Bru 0233 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'fe', "Tridi 23 Bru 0233 ☽"          , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'fe', "Quartidi 24 Bru 0233 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'fe', "Quartidi 24 Bru 0233 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'gr', "Wednesday 13 Nov 2024 ☽"      , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'gr', "Thursday 14 Nov 2024 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'gr', "Thursday 14 Nov 2024 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'hi', "Yaum al-Khamees 12 J.A 1446 ☽", "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'hi', "Yaum al-Khamees 12 J.A 1446 ☾", "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'hi', "Yaum al-Khamees 12 J.A 1446 ☼", "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'jl', "Wednesday 31 Oct 2024 ☽"      , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'jl', "Thursday 01 Nov 2024 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'jl', "Thursday 01 Nov 2024 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'jc', "Wednesday 31 Oct 2777 ☽"      , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'jc', "Thursday 01 Nov 2777 ☾"       , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'jc', "Thursday 01 Nov 2777 ☼"       , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'pe', "Chahar shanbe 23 Aba 1403 ☽"  , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'pe', "Panj shanbe 24 Aba 1403 ☾"    , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'pe', "Panj shanbe 24 Aba 1403 ☼"    , "Yom Chamishi 13 Hes 5785 ☼")
-            , (5785,  8, 13, after-sunset,   'pa', "Chahar shanbe 23 Aba 1403 ☽"  , "Yom Chamishi 13 Hes 5785 ☽")
-            , (5785,  8, 13, before-sunrise, 'pa', "Panj shanbe 24 Aba 1403 ☾"    , "Yom Chamishi 13 Hes 5785 ☾")
-            , (5785,  8, 13, daylight,       'pa', "Panj shanbe 24 Aba 1403 ☼"    , "Yom Chamishi 13 Hes 5785 ☼")
+my @data-maya = (
+       (5785,  9,  2, after-sunset,   'm0', " 7 Mac 1 Chicchan"        , "Yom Shlishi 02 Kis 5785 ☽", "Gregorian: 2024-12-02")
+     , (5785,  9,  2, before-sunrise, 'm0', " 7 Mac 1 Chicchan"        , "Yom Shlishi 02 Kis 5785 ☾", "Gregorian: 2024-12-03")
+     , (5785,  9,  2, daylight,       'm0', " 8 Mac 1 Chicchan"        , "Yom Shlishi 02 Kis 5785 ☼", "Gregorian: 2024-12-03")
+     , (5785,  2,  6, after-sunset,   'm1', "12 Uo 8 Men"              , "Yom Rishon 06 Iya 5785 ☽" , "Gregorian: 2025-05-03")
+     , (5785,  2,  6, before-sunrise, 'm1', "12 Uo 8 Men"              , "Yom Rishon 06 Iya 5785 ☾" , "Gregorian: 2025-05-04")
+     , (5785,  2,  6, daylight,       'm1', "13 Uo 8 Men"              , "Yom Rishon 06 Iya 5785 ☼" , "Gregorian: 2025-05-04")
+     , (5784, 10,  4, after-sunset,   'm2', "18 Mac 11 Chuen"          , "Yom Shabbat 04 Tev 5784 ☽", "Gregorian: 2023-12-15")
+     , (5784, 10,  4, before-sunrise, 'm2', "18 Mac 11 Chuen"          , "Yom Shabbat 04 Tev 5784 ☾", "Gregorian: 2023-12-16")
+     , (5784, 10,  4, daylight,       'm2', "19 Mac 11 Chuen"          , "Yom Shabbat 04 Tev 5784 ☼", "Gregorian: 2023-12-16")
+     , (5783,  6, 15, after-sunset,   'a0', "12 Atemoztli 10 Miquiztli", "Yom Shishi 15 Elu 5783 ☽" , "Gregorian: 2023-08-31")
+     , (5783,  6, 15, before-sunrise, 'a0', "12 Atemoztli 10 Miquiztli", "Yom Shishi 15 Elu 5783 ☾" , "Gregorian: 2023-09-01")
+     , (5783,  6, 15, daylight,       'a0', "13 Atemoztli 10 Miquiztli", "Yom Shishi 15 Elu 5783 ☼" , "Gregorian: 2023-09-01")
+     , (5782, 11, 24, after-sunset,   'a1', "17 Toxcatl 2 Miquiztli"   , "Yom Reviʻi 24 Shv 5782 ☽" , "Gregorian: 2022-01-25")
+     , (5782, 11, 24, before-sunrise, 'a1', "17 Toxcatl 2 Miquiztli"   , "Yom Reviʻi 24 Shv 5782 ☾" , "Gregorian: 2022-01-26")
+     , (5782, 11, 24, daylight,       'a1', "18 Toxcatl 2 Miquiztli"   , "Yom Reviʻi 24 Shv 5782 ☼" , "Gregorian: 2022-01-26")
             );
 
-my %class =   ba => 'Date::Calendar::Bahai'
+my %class =   a0 => 'Date::Calendar::Aztec'
+            , a1 => 'Date::Calendar::Aztec::Cortes'
+            , ba => 'Date::Calendar::Bahai'
             , be => 'Date::Calendar::Bahai::Astronomical'
             , gr => 'Date::Calendar::Gregorian'
             , co => 'Date::Calendar::Coptic'
@@ -83,11 +105,37 @@ my %class =   ba => 'Date::Calendar::Bahai'
             , hi => 'Date::Calendar::Hijri'
             , jl => 'Date::Calendar::Julian'
             , jc => 'Date::Calendar::Julian::AUC'
+            , m0 => 'Date::Calendar::Maya'
+            , m1 => 'Date::Calendar::Maya::Astronomical'
+            , m2 => 'Date::Calendar::Maya::Spinden'
             , pe => 'Date::Calendar::Persian'
             , pa => 'Date::Calendar::Persian::Astronomical'
             ;
 
-plan 12 × @data.elems;
+my %ver   =   a0 => '0.0.3'
+            , a1 => '0.0.3'
+            , ba => '0.0.2'
+            , pe => '0.0.2'
+            , be => '0.0.2'
+            , co => '0.0.3'
+            , et => '0.0.3'
+            , fr => '0.0.6'
+            , fa => '0.0.6'
+            , fe => '0.0.6'
+            , gr => '0.0.2'
+            , he => '0.0.4'
+            , hi => '0.0.2'
+            , jl => '0.0.4'
+            , jc => '0.0.4'
+            , m0 => '0.0.3'
+            , m1 => '0.0.3'
+            , m2 => '0.0.3'
+            , pe => '0.0.2'
+            , pa => '0.0.2'
+            ;
+
+plan 12 × @data.elems
+   + 12 × @data-maya.elems;
 
 for (@data) -> $datum {
   my ($year, $month, $day, $daypart, $cal, $str2, $str3) = $datum;
@@ -109,6 +157,37 @@ for (@data) -> $datum {
   # pull-push
   my $d5 = ::(%class{$cal}).new-from-date($d1);
   is($d5.strftime("%A %d %b %Y %Ep"), $str2, "testing pull with $str2");
+  is(substr($d5.^ver.Str, 0, 4), '0.1.');
+  my $d6 = $d5.to-date(%class<he>);
+  is($d6.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-push with $str2 and $str3");
+  is($d6.^ver, $ver-he);
+
+  # pull-pull
+  my Date::Calendar::Hebrew $d7 .= new-from-date($d5);
+  is($d7.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-pull with $str2 and $str3");
+  is($d7.^ver, $ver-he);
+}
+
+for (@data-maya) -> $datum {
+  my ($year, $month, $day, $daypart, $cal, $str2, $str3) = $datum;
+  my Date::Calendar::Hebrew $d1 .= new(year => $year, month => $month, day => $day, daypart => $daypart);
+
+  # push-push
+  my $d2 = $d1.to-date(%class{$cal});
+  is($d2.strftime("%e %B %V %A"), $str2, "testing push with $str2");
+  is(substr($d2.^ver.Str, 0, 4), '0.1.');
+  my $d3 = $d2.to-date(%class<he>);
+  is($d3.strftime("%A %d %b %Y %Ep"), $str3, "testing push-push with $str2 and $str3");
+  is($d3.^ver, $ver-he);
+
+  # push-pull
+  my Date::Calendar::Hebrew $d4 .= new-from-date($d2);
+  is($d4.strftime("%A %d %b %Y %Ep"), $str3, "testing push-pull with $str2 and $str3");
+  is($d4.^ver, $ver-he);
+
+  # pull-push
+  my $d5 = ::(%class{$cal}).new-from-date($d1);
+  is($d5.strftime("%e %B %V %A"), $str2, "testing pull with $str2");
   is(substr($d5.^ver.Str, 0, 4), '0.1.');
   my $d6 = $d5.to-date(%class<he>);
   is($d6.strftime("%A %d %b %Y %Ep"), $str3, "testing pull-push with $str2 and $str3");
