@@ -12,6 +12,18 @@ Or you can send me an e-mail  at `J2N-FORGET at orange dot fr`, with a
 subject  containing  the  name  of  the module  or  the  name  of  the
 repository, so my spam filter will accept this mail.
 
+Advanced Documentation
+======================
+
+If you  want to make advanced  contributions, may be you  should first
+read the designer's notes in
+[https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary/doc/notes-en.md]
+(or its French translation in
+[https://github.com/jforget/raku-Date-Calendar-FrenchRevolutionary/doc/notes-fr.md]),
+to  better grasp  the architecture  of the  modules. These  designer's
+notes apply  to all  `Date::Calendar::xxx` modules,  not only  for the
+French Revolutionary one.
+
 Advanced Contributions
 ======================
 

@@ -22,6 +22,11 @@ echo -------------------
 grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' -P '6\.c' *
 
 echo -------------------
+echo perl 6
+echo -------------------
+grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' -P -i 'perl\s*6' *
+
+echo -------------------
 echo module version and api
 echo -------------------
 grep -r --exclude=grep-all --exclude-dir='.git' --exclude-dir='.precomp' --exclude-dir='doc' -P '\b(ver|api)\b' *

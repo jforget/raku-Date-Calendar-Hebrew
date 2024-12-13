@@ -52,7 +52,7 @@ Date::Calendar::Hebrew::Names - string values for the Hebrew calendar
 
 =head1 SYNOPSIS
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Hebrew;
 
@@ -69,6 +69,8 @@ The day names come from L<https://en.wikipedia.org/wiki/Hebrew_calendar>.
 
 The month names and abbreviations come from
 L<https://api.kde.org/4.x-api/kdelibs-apidocs/kdecore/html/kcalendarsystemhebrew_8cpp_source.html>
+With the  new versions of KDE,  this URL will be  obsolete. You should
+search for the KDE source files with a search engine or similar.
 
 =head1 SEE ALSO
 

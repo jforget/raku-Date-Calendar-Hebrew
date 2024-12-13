@@ -8,7 +8,7 @@ SYNOPSIS
 
 Converting a Gregorian date (e.g. 16th June 2019) into Hebrew
 
-```perl6
+```
 use Date::Calendar::Hebrew;
 my Date                   $TPC2019-Pittsburgh-grg;
 my Date::Calendar::Hebrew $TPC2019-Pittsburgh-heb;
@@ -25,7 +25,7 @@ say "{.day-name} {.day} {.month-name} {.year}" with $TPC2019-Pittsburgh-heb;
 
 Converting a Hebrew date (e.g. 6 Av 5779) into Gregorian
 
-```perl6
+```
 use Date::Calendar::Hebrew;
 my Date::Calendar::Hebrew $Perlcon-Riga-heb;
 my Date                   $Perlcon-Riga-grg;
@@ -53,7 +53,6 @@ git clone https://github.com/jforget/raku-Date-Calendar-Hebrew.git
 cd raku-Date-Calendar-Hebrew
 zef install .
 ```
-
 
 DESCRIPTION
 ===========

@@ -184,7 +184,7 @@ sub year-days(Int $year --> Int) {
 }
 
 sub ymdf-to-jed(Int $year, Int $month, Int $day --> Int) {
-  # Not directly translated from Perl 5 into Perl 6, but Perl 5 → APL → Perl 6
+  # Not directly translated from Perl 5 into Raku, but Perl 5 → APL → Raku
   #
   #      V ← 6 ⌽ ⍳ year_months year
   #      +/ { year month_days ⍵ } [ (¯1 + V ⍳ month) ↑ V ]
@@ -252,7 +252,7 @@ Date::Calendar::Hebrew - Conversions from / to the Hebrew calendar
 
 Converting a Gregorian date (e.g. 16th June 2019) into Hebrew
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Hebrew;
 my Date                   $TPC2019-Pittsburgh-grg;
@@ -272,7 +272,7 @@ say $TPC2019-Pittsburgh-heb.strftime("%A %d %B %Y");
 
 Converting an Hebrew date (e.g. 6 Av 5779) into Gregorian
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Hebrew;
 my Date::Calendar::Hebrew $Perlcon-Riga-heb;
@@ -290,7 +290,7 @@ say $Perlcon-Riga-grg;
 Hannukah  begins on  25 Kislev  at sunset.  What is  the corresponding
 Gregorian date?
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Hebrew;
 use Date::Calendar::Strftime;
@@ -300,10 +300,22 @@ my Date                   $hannukah-grg;
 $hannukah-heb .= new(year    => 5785
                    , month   =>    9
                    , day     =>   25
-                   , daypart => after-sunset);
+                   , daypart => after-sunset());
 $hannukah-grg = $hannukah-heb.to-date;
 
 say $hannukah-grg;
+# --> '2024-12-25' instead of '2024-12-26'
+
+# on the other hand:
+$hannukah-heb .= new(year => 5785, month => 9, day => 25, daypart => before-sunrise());
+$hannukah-grg  = $hannukah-heb.to-date;
+say $hannukah-grg;
+# --> '2024-12-26'
+
+$hannukah-heb .= new(year => 5785, month => 9, day => 25, daypart => daylight());
+$hannukah-grg  = $hannukah-heb.to-date;
+say $hannukah-grg;
+# --> '2024-12-26' also
 
 =end code
 
@@ -371,6 +383,10 @@ Gives a short string representing the date, in C<YYYY-MM-DD> format.
 
 The numbers defining the date.
 
+=head3 daycount
+
+The MJD (Modified Julian Date) number for the date.
+
 =head3 daypart
 
 A  number indicating  which part  of the  day. This  number should  be
@@ -398,11 +414,6 @@ for all months.
 =head3 day-name
 
 The name of the day within  the week.
-
-=head3 daycount
-
-Convert  the date  to Modified  Julian Day  Number (a  day-only scheme
-based on 17 November 1858).
 
 =head3 day-of-week
 
@@ -446,7 +457,7 @@ styles,  a "push"  conversion and  a "pull"  conversion. For  example,
 while converting "26 Tamuz 5779" to the French Revolutionary calendar,
 you can code:
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 use Date::Calendar::Hebrew;
 use Date::Calendar::FrenchRevolutionary;
@@ -477,7 +488,7 @@ This method is  very similar to the homonymous functions  you can find
 in several  languages (C, shell, etc).  It also takes some  ideas from
 C<printf>-similar functions. For example
 
-=begin code :lang<perl6>
+=begin code :lang<raku>
 
 $df.strftime("%04d blah blah blah %-25B")
 
@@ -618,9 +629,9 @@ abbreviated.
 
 Another  issue,   as  explained  in   the  C<Date::Calendar::Strftime>
 documentation. Please ensure that  format-string passed to C<strftime>
-comes from  a trusted source.  For example, by including  a outrageous
-length in  a C<strftime> specifier, you  can drain your PC's  RAM very
-fast.
+comes from  a trusted source.  Failing that, the untrusted  source can
+include a outrageous  length in a C<strftime> specifier  and can drain
+your PC's RAM very fast.
 
 =head2 Relations with :ver<0.0.x> classes
 
