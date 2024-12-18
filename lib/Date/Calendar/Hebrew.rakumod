@@ -284,6 +284,7 @@ $Perlcon-Riga-heb .= new(year  => 5779
 $Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
 
 say $Perlcon-Riga-grg;
+# --> '2019-08-07'
 
 =end code
 
@@ -393,9 +394,9 @@ A  number indicating  which part  of the  day. This  number should  be
 filled   and   compared   with   the   following   subroutines,   with
 self-documenting names:
 
-=item before-sunrise
-=item daylight
-=item after-sunset
+=item before-sunrise()
+=item daylight()
+=item after-sunset()
 
 =head3 month-name
 
@@ -633,7 +634,7 @@ comes from  a trusted source.  Failing that, the untrusted  source can
 include a outrageous  length in a C<strftime> specifier  and can drain
 your PC's RAM very fast.
 
-=head2 Relations with :ver<0.0.x> classes
+=head2 Relations with :ver<0.0.x> classes and with core class Date
 
 Version 0.1.0 (and API 1) was  introduced to ease the conversions with
 other calendars in  which the day is  defined as midnight-to-midnight.
@@ -649,6 +650,12 @@ C<before-sunrise>) to C<daylight>, or it  may shift to the C<daylight>
 part of  the prior (or  next) date. This  means that a  roundtrip with
 cascade conversions  may give the  starting date,  or it may  give the
 date prior or after the starting date.
+
+If you  install C<<Date::Calendar::Hebrew:ver<0.1.0>>>, why  would you
+refrain  from upgrading  other C<Date::Calendar::>R<xxxx>  classes? So
+actually, this issue applies mainly to the core class C<Date>, because
+you may prefer avoiding the installation of
+C<Date::Calendar::Gregorian>.
 
 =head2 Time
 
