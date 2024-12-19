@@ -1,6 +1,6 @@
 Revision history for Date-Calendar-Hebrew
 
-0.1.0, released on...
+0.1.0, released on Thursday 2024-12-19 or Yom Chamishi 18 Kislev 5785
     - use file extensions '.rakumod' and '.rakutest' instead of '.pm6' and '.t'
     - add a "daypart" method, so the "after sunset" dates will be properly converted from / to midnight-to-midnight calendars
 
