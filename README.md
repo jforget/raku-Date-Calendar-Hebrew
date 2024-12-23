@@ -36,7 +36,37 @@ $Perlcon-Riga-heb .= new(year  => 5779
 $Perlcon-Riga-grg = $Perlcon-Riga-heb.to-date;
 
 say $Perlcon-Riga-grg;
+```
 
+Converting a Hebrew date to Gregorian, while paying attention to sunset.
+For example, Hannukah begins on 25 Kislev at sunset. For 5785 / 2024,
+what does that translate to in the Gregorian calendar?
+
+```
+use Date::Calendar::Hebrew;
+use Date::Calendar::Strftime;
+my Date::Calendar::Hebrew $hannukah-heb;
+my Date                   $hannukah-grg;
+
+$hannukah-heb .= new(year    => 5785
+                   , month   =>    9
+                   , day     =>   25
+                   , daypart => after-sunset());
+$hannukah-grg = $hannukah-heb.to-date;
+
+say $hannukah-grg;
+# --> '2024-12-25' instead of '2024-12-26'
+
+# on the other hand:
+$hannukah-heb .= new(year => 5785, month => 9, day => 25, daypart => before-sunrise());
+$hannukah-grg  = $hannukah-heb.to-date;
+say $hannukah-grg;
+# --> '2024-12-26'
+
+$hannukah-heb .= new(year => 5785, month => 9, day => 25, daypart => daylight());
+$hannukah-grg  = $hannukah-heb.to-date;
+say $hannukah-grg;
+# --> '2024-12-26' also
 ```
 
 INSTALLATION
@@ -60,6 +90,10 @@ DESCRIPTION
 Date::Calendar::Hebrew  is a  class representing  dates in  the Hebrew
 calendar. It allows  you to convert an Hebrew date  into Gregorian (or
 possibly other) calendar and the other way.
+
+when creating  the `Date::Calendar::xxxx` instance, you  may include a
+`daypart` parameter, so the conversion will give the proper result for
+dates after sunset.
 
 AUTHOR
 ======

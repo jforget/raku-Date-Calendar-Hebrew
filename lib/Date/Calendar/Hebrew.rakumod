@@ -472,6 +472,8 @@ $d-orig .= new(year  => 5779
              , day   =>   26);
 $d-dest-push  = $d-orig.to-date("Date::Calendar::FrenchRevolutionary");
 $d-dest-pull .= new-from-date($d-orig);
+say $d-orig, ' ', $d-dest-push, ' ', $d-dest-pull;
+# --> "5779-04-26 0227-11-11 0227-11-11"
 
 =end code
 
