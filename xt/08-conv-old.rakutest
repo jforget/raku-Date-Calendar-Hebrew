@@ -132,7 +132,7 @@ my %ver   =   a0 => '0.0.3'
             , pe => '0.0.2'
             , pa => '0.0.2'
             ;
-my Str $ver-he = '0.1.0';
+my Str $ver-he = '0.1.1';
 
 plan 15 × @data-greg.elems
    + 12 × @data-other.elems

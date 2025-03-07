@@ -3,7 +3,7 @@ use Date::Calendar::Strftime;
 use Date::Calendar::Hebrew::Names;
 use List::MoreUtils <before>;
 
-unit class Date::Calendar::Hebrew:ver<0.1.0>:auth<zef:jforget>:api<1>
+unit class Date::Calendar::Hebrew:ver<0.1.1>:auth<zef:jforget>:api<1>
       does Date::Calendar::Strftime;
 
 has Int $.year  where { $_ ≥ 1 };
@@ -653,7 +653,7 @@ part of  the prior (or  next) date. This  means that a  roundtrip with
 cascade conversions  may give the  starting date,  or it may  give the
 date prior or after the starting date.
 
-If you  install C<<Date::Calendar::Hebrew:ver<0.1.0>>>, why  would you
+If you  install C<<Date::Calendar::Hebrew:ver<0.1.1>>>, why  would you
 refrain  from upgrading  other C<Date::Calendar::>R<xxxx>  classes? So
 actually, this issue applies mainly to the core class C<Date>, because
 you may prefer avoiding the installation of
@@ -761,7 +761,7 @@ was the basis of the computations in this module.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2019, 2020, 2023, 2024 Jean Forget, all rights reserved
+Copyright (c) 2019, 2020, 2023, 2024, 2025 Jean Forget, all rights reserved
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

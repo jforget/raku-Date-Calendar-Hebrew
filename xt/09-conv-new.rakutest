@@ -27,7 +27,7 @@ use Date::Calendar::Maya::Spinden;
 use Date::Calendar::Persian;
 use Date::Calendar::Persian::Astronomical;
 
-my $ver-he = '0.1.0';
+my $ver-he = '0.1.1';
 my @data  = (
        (5785,  9, 14, after-sunset,   'ba', "Jamál 04 Mal 0181 ☽"         , "Yom Rishon 14 Kis 5785 ☽"     , "Gregorian: 2024-12-14")
      , (5785,  9, 14, before-sunrise, 'ba', "Jamál 04 Mal 0181 ☾"         , "Yom Rishon 14 Kis 5785 ☾"     , "Gregorian: 2024-12-15")
